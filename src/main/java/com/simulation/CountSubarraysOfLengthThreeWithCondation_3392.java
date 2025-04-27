@@ -8,6 +8,7 @@ public class CountSubarraysOfLengthThreeWithCondation_3392 {
             int mid = nums[i -1];
             int lr = nums[i - 2] + nums[i];
             if (mid == lr * 2) res++;
+
         }
 
         return res;
