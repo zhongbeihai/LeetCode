@@ -1,15 +1,14 @@
 package com.sliding_windows;
 
+import java.util.Arrays;
+
 public class CountSubarrayWithMaxEleAppearAtLeastKth_2962 {
     public long countSubarrays(int[] nums, int k) {
-        int maxEle = -1, maxCount = 0;
+        int maxEle = Arrays.stream(nums).max().getAsInt(), maxCount = 0;
         long res = 0;
         int left = 0, n = nums.length;
         for (int right = 0; right < n; right++){
-            if (nums[right] > maxEle){
-                maxEle = nums[right];
-                maxCount = 1;
-            } else if (nums[right] == maxEle) {
+            if (nums[right] == maxEle) {
                 maxCount++;
             }
             if (maxCount == k) res += n - right;
