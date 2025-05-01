@@ -10,5 +10,4 @@ public class FindNumbersWithEvenNumberOfDigits_1295 {
 
         return res;
     }
-
 }
