@@ -5,7 +5,6 @@ import java.util.Stack;
 public class LexicographicallyMinimumStringAfterRemovingStars_3170 {
     public String clearStars(String s) {
         StringBuilder sb = new StringBuilder();
-        Stack<Character> stack = new Stack<>();
         char[] ss = s.toCharArray();
 
         int[] minCharCount = new int[26];
