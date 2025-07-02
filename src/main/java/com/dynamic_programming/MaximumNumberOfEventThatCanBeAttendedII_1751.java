@@ -12,7 +12,7 @@ public class MaximumNumberOfEventThatCanBeAttendedII_1751 {
         for (int i = 1; i <= n; i++){
             // 1. skip this event -> dp[i][j] = dp[i - 1][j]
             // 2. use this event -> dp[i][j] = dp[lastAvailable + 1][j - 1]
-            int startTime = events[i-1][0], val = events[i-1][2] ;
+            int startTime = events[i-1][0], val = events[i-1][2]  ;
             int lastAvailableEvent = findLastAvailableEvent(startTime, events, i - 1);
             for (int j = 1; j <= k; j++){
                 dp[i][j] = Math.max(dp[i - 1][j], dp[lastAvailableEvent + 1][j - 1] + val);
