@@ -7,22 +7,23 @@ import java.util.Stack;
 
 public class SimplifyPath_71 {
     public String simplifyPath(String path) {
-        String[] paths = path.split("/");
+        String[] sep = path.split("/");
+
         ArrayDeque<String> deque = new ArrayDeque<>();
-        for(String p : paths){
-            if(p.equals("") || p.equals(".")) continue;
-            if(p.equals("..")){
-                if(!deque.isEmpty()) {
-                    deque.removeLast();
-                }
-                continue;
+        
+        for (String p: sep){
+            if (p.equals(".") || p.isEmpty()) {
+            } else if (p.equals("..")) {
+                deque.pollLast();
+            }else {
+                deque.addLast("/" + p);
             }
-            deque.addLast("/" + p);
         }
-        if(deque.isEmpty()) deque.add("/");
+
+        if (deque.isEmpty()) return "/";
         StringBuilder sb = new StringBuilder();
         while (!deque.isEmpty()){
-            sb.append(deque.removeFirst());
+            sb.append(deque.pollFirst());
         }
         return sb.toString();
     }
