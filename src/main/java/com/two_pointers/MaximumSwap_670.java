@@ -2,40 +2,28 @@ package com.two_pointers;
 
 public class MaximumSwap_670 {
     public int maximumSwap(int num) {
-        String[] ss = String.valueOf(num).split("");
-        Integer[] nums = new Integer[ss.length];
-        for(int i = 0; i < nums.length; i++){
-            nums[i] = Integer.parseInt(ss[i]);
-        }
+        char[] nums = String.valueOf(num).toCharArray();
 
-
-        for(int l = 0; l < nums.length - 1; l++){
-            int r = nums.length - 1, maxPlace = l;
-            while (r >= l){
-                if(nums[r] > nums[maxPlace]){
-                    maxPlace = r;
-                }
-                r--;
+        for (int i = 0; i < nums.length; i++){
+            int p = i;
+            for (int j = nums.length - 1; j > i; j--){
+                if (nums[j] - '0' > nums[p]  -'0') p = j;
             }
-            if(nums[maxPlace] > nums[l]){
-                int tem = nums[maxPlace];
-                nums[maxPlace] = nums[l];
-                nums[l] = tem;
-                break;
+            if (p != i){
+                char tem = nums[i];
+                nums[i] = nums[p];
+                nums[p] = tem;
+
+                return Integer.parseInt(String.valueOf(nums));
             }
         }
 
-
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < nums.length; i++){
-            sb.append(nums[i].toString());
-        }
-        return Integer.parseInt(sb.toString());
+        return num;
     }
 
     public static void main(String[] args) {
         MaximumSwap_670 m = new MaximumSwap_670();
-        m.maximumSwap(9973);
+        m.maximumSwap(3726);
     }
 
 }

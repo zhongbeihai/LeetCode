@@ -31,7 +31,7 @@ public class ValidPalindrome_125 {
 
     public static void main(String[] args) {
         ValidPalindrome_125 v = new ValidPalindrome_125();
-        v.isPalindrome("0P");
+        v.isPalindrome("A man, a plan, a canal: Panama");
         // abcca
     }
 }
