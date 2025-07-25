@@ -18,6 +18,7 @@ public class FindTheIndexOfFirstOccurrenceInAString_28 {
     }
 
     public static void main(String[] args) {
-
+        FindTheIndexOfFirstOccurrenceInAString_28 f = new FindTheIndexOfFirstOccurrenceInAString_28();
+        f.strStr("sadbutsad", "sad");
     }
 }
