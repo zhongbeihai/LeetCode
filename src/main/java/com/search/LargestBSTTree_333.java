@@ -26,7 +26,7 @@ public class LargestBSTTree_333 {
             return new int[]{1, size, min, max};
         }
 
-        return new int[]{0, 0, 0 , 0};
+        return new int[]{0, 0, 0, 0};
     }
 
     public static void main(String[] args) {
