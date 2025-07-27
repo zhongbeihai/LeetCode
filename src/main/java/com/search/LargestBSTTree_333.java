@@ -11,7 +11,22 @@ public class LargestBSTTree_333 {
     }
 
     public int[] dfs(TreeNode root){
-   1
+        // {isBST, size, minValue, maxValue}
+        if (root == null) return new int[]{1, 0, Integer.MAX_VALUE, Integer.MIN_VALUE};
+
+        int[] left = dfs(root.left);
+        int[] right = dfs(root.right);
+
+        if (left[0] == 1 && right[0] == 1 && root.val > left[3] && root.val < right[2]){
+            int min = Math.min(left[2], root.val);
+            int max = Math.max(right[3], root.val);
+            int size = left[1] + right[1] + 1;
+            maxSize = Math.max(maxSize, size);
+
+            return new int[]{1, size, min, max};
+        }
+
+        return new int[]{0, 0, 0 , 0};
     }
 
     public static void main(String[] args) {
