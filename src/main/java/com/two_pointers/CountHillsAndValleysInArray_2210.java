@@ -7,8 +7,7 @@ public class CountHillsAndValleysInArray_2210 {
         for (int right = 1; right < nums.length - 1; right++){
             if (nums[right] == nums[right + 1]) continue;
             else {
-                if ( (nums[right] < nums[left] && nums[right] < nums[right + 1])
-                        || (nums[right] > nums[left] && nums[right] > nums[right + 1])) count++;
+                if ( (nums[right] < nums[left] && nums[right] < nums[right + 1]) || (nums[right] > nums[left] && nums[right] > nums[right + 1])) count++;
             }
             left = right;
         }
