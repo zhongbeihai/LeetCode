@@ -28,6 +28,6 @@ public class MinimumSizesSubarrayInInfiniteArray_2875 {
         }
 
         if (target == 0) return 0;
-        return minWindowLen == Integer.MIN_VALUE ? -1 : fullRepeats * n + minWindowLen;
+        return minWindowLen == Integer.MAX_VALUE ? -1 : fullRepeats * n + minWindowLen;
     }
 }
