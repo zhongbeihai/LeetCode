@@ -13,15 +13,15 @@ public class DiagonalTraverse_498 {
             res[cnt++] = mat[x][y];
 
             if (diagonalDir == 1){
-                if (x == 0){
-                    y++;
-                    diagonalDir *= -1;
-                } else if (y == m - 1) {
+                 if (y == m - 1) {
                     x++;
                     diagonalDir *= -1;
-                }else {
-                    x += diagonalDir;
-                    y += diagonalDir;
+                }else if (x == 0){
+                    y++;
+                    diagonalDir *= -1;
+                } else {
+                    x -= 1;
+                    y += 1;
                 }
             }else {
                 if (x == n - 1){
@@ -31,8 +31,8 @@ public class DiagonalTraverse_498 {
                     x++;
                     diagonalDir *= -1;
                 }else {
-                    x += diagonalDir;
-                    y += diagonalDir;
+                    x += 1;
+                    y -= 1;
                 }
             }
         }
@@ -41,6 +41,7 @@ public class DiagonalTraverse_498 {
     }
 
     public static void main(String[] args) {
-
+        DiagonalTraverse_498 d= new DiagonalTraverse_498();
+        d.findDiagonalOrder(new int[][]{{1,2,3},{4,5,6},{7, 8, 9}});
     }
 }
