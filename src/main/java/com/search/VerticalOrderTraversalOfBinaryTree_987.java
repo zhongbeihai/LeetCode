@@ -20,8 +20,10 @@ public class VerticalOrderTraversalOfBinaryTree_987 {
                     cur.add(pq.poll());
                 }
             }
+
             res.add(cur);
         }
+
         return res;
     }
 
