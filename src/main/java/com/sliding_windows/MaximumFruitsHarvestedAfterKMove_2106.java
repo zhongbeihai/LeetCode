@@ -24,6 +24,7 @@ public class MaximumFruitsHarvestedAfterKMove_2106 {
     public boolean canReach(int L, int R, int startPos, int k){
         // go left first and turn right
         int step1 = Math.abs(startPos - L) + (R - L);
+
         // go right first and turn left
         int step2 = Math.abs(startPos - R) + (R - L);
 
