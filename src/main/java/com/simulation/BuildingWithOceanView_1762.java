@@ -1,9 +1,6 @@
 package com.simulation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class BuildingWithOceanView_1762 {
     public int[] findBuildings(int[] heights) {
@@ -20,7 +17,12 @@ public class BuildingWithOceanView_1762 {
         }
 
         Collections.reverse(res);
-        return  res.stream().mapToInt(Integer::intValue).toArray();
+        int[] ans = new int[res.size()];
+        for (int i = 0; i < res.size(); i++) {
+            ans[i] = res.get(i);
+        }
+        return ans;
+        //return  res.stream().mapToInt(Integer::intValue).toArray();
 
     }
 
