@@ -14,7 +14,7 @@ public class FruitsIntoBasketsIII_3479 {
         for (int fruit: fruits){
             Integer leftMost = available.first();
             while (leftMost != null && baskets[leftMost] < fruit){
-                available.remove(leftMost);
+                // available.remove(leftMost);
                 leftMost = available.higher(leftMost);
             }
             if (leftMost == null){
