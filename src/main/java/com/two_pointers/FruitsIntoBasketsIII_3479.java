@@ -1,30 +1,22 @@
 package com.two_pointers;
 
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class FruitsIntoBasketsIII_3479 {
     public int numOfUnplacedFruits(int[] fruits, int[] baskets) {
-        int n = baskets.length;
-        TreeMap<Integer, TreeSet<Integer>> map = new TreeMap<>();
-        for (int i = 0; i < n; i++) {
-            map.computeIfAbsent(baskets[i], k -> new TreeSet<Integer>()).add(i);
+        TreeSet<Integer> available = new TreeSet<>();
+        for (int i = 0; i < baskets.length; i++) {
+            available.add(i);
         }
 
-        int unplaced = 0;
+        int unplaced = fruits.length;
         for (int fruit: fruits){
-            Integer ceilingKey = map.ceilingKey(fruit);
-            if (ceilingKey == null){
-                unplaced++;
-                continue;
-            }
-
-            TreeSet<Integer> indices = map.get(ceilingKey);
-            int leftMost = indices.first();
-            indices.remove(leftMost);
-            if (indices.isEmpty()){
-                map.remove(ceilingKey);
+            for (int idx: available){
+                if (baskets[idx] >= fruit){
+                    available.remove(idx);
+                    unplaced--;
+                    break;
+                }
             }
         }
 
