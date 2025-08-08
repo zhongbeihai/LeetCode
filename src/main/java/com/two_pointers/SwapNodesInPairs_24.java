@@ -4,21 +4,23 @@ import structure.ListNode;
 
 public class SwapNodesInPairs_24 {
     public ListNode swapPairs(ListNode head) {
-        if (head == null) return null;
-        if (head.next == null) return head;
+        if (head == null || head.next == null) return head;
 
-        ListNode p1 = head, p2 = head.next;
-        ListNode dummy = p2;
-        while (p1.next != null){
-            ListNode tem = p2.next;
-            p1.next = tem;
-            p2.next = p1;
+        ListNode dummy = new ListNode(-1, head);
+        ListNode prev = dummy, cur = head;
+        while (cur != null){
+            ListNode nn = cur.next.next;
+            ListNode n = cur.next;
 
-            p2 = tem.next;
-            p1 = tem;
+            n.next = cur;
+            cur.next = nn;
+            prev.next = n;
+
+            prev = cur;
+            cur = nn;
         }
 
-        return dummy;
+        return dummy.next;
     }
 
     public static void main(String[] args) {

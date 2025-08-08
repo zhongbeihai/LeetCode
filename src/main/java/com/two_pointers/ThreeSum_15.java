@@ -6,35 +6,32 @@ import java.util.List;
 
 public class ThreeSum_15 {
     public List<List<Integer>> threeSum(int[] nums) {
+        if (nums.length < 3) return new ArrayList<>();
+
         List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(nums);
-        for(int i = 0; i < nums.length; i++){
-            List<Integer> tem = new ArrayList<>();
-            tem.add(nums[i]);
-            int start = 0, end = nums.length - 1;
-            while (start < end){
-                if(nums[start] + nums[end] + nums[i] == 0){
-                    if(start != i && end != i){
-                        tem.add(nums[start]);
-                        tem.add(nums[end]);
-                        res.add(new ArrayList<>(tem));
-                        start++;
-                        end--;
-                        while (start < end && nums[start] == nums[start - 1]){
-                            start++;
-                        }
-                        while (start < end && nums[end] == nums[end + 1]){
-                            end--;
-                        }
-                    }
 
-                } else if (nums[start] + nums[end] + nums[i] > 0) {
-                    end--;
-                } else if (nums[start] + nums[end] + nums[i] < 0) {
-                    start++;
+        int len = nums.length;
+        for (int i = 0; i < len - 2; i++){
+            if (nums[i] > 0) break;
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+            int left = i + 1, right = len - 1;
+            while (left < right){
+                if (nums[left] + nums[right] + nums[i] == 0) {
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
+                    left++;
+                    right--;
+                } else if (nums[left] + nums[right] + nums[i] < 0) {
+                    left++;
+                } else if (nums[left] + nums[right] + nums[i] > 0) {
+                    right--;
                 }
             }
         }
+
         return res;
     }
 
