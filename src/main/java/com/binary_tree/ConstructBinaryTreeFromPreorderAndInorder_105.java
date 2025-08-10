@@ -6,30 +6,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ConstructBinaryTreeFromPreorderAndInorder_105 {
-    int[] preOrder, inOrder;
-    Map<Integer, Integer> inorderMap = new HashMap<>();
-    int preIdx = 0;
+    int[] preorder, inorder;
+    int preorderIdx = 0;
+    Map<Integer, Integer> inorderIdxMap = new HashMap<>(); // map val to index in inorder
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         if (preorder == null || inorder == null) return null;
+
+        this.preorder = preorder;
+        this.inorder = inorder;
         for (int i = 0; i < inorder.length; i++) {
-            inorderMap.put(inorder[i], i);
+            inorderIdxMap.put(inorder[i], i);
         }
-        this.preOrder = preorder;
-        this.inOrder = inorder;
 
         return build(0, preorder.length - 1);
     }
 
-    public TreeNode build(int inStart, int inEnd){
-        if (inStart > inEnd) return null;
+    /**
+     *
+     * @param inL the left bound of current subtree in inorder array
+     * @param inR the right bound of current subtree in inorder array
+     * @return
+     */
+    public TreeNode build(int inL, int inR){
+        // stop condition
+        if (inL > inR) return null;
 
-        int val = preOrder[preIdx++];
+        int val = preorder[preorderIdx++];
+        int idxInorder = inorderIdxMap.get(val);
+
         TreeNode root = new TreeNode(val);
+        root.left = build(inL, idxInorder - 1);
+        root.right = build(idxInorder + 1, inR);
 
-        int inRootIdx = inorderMap.get(val);
-
-        root.left = build(inStart, inRootIdx - 1);
-        root.right = build(inRootIdx + 1, inEnd);
         return root;
     }
 }
