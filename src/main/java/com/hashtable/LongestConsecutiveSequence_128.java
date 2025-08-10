@@ -1,28 +1,24 @@
 package com.hashtable;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public class LongestConsecutiveSequence_128 {
     public int longestConsecutive(int[] nums) {
         if (nums.length == 0) return 0;
-        // <last number of sequence, the length of sequence>
-        HashMap<Integer, Integer> map = new HashMap<>();
-
         Arrays.sort(nums);
+        Map<Integer, Integer> map = new HashMap<>();
+
+        int res = 1;
         for (int num: nums){
             if (map.containsKey(num - 1)){
+                res = Math.max(res, map.get(num - 1) + 1);
                 map.put(num, map.get(num - 1) + 1);
-                map.remove(num - 1);
             }else {
-                if (!map.containsKey(num))map.put(num, 1);
+                map.put(num, 1);
             }
         }
 
-
-        return map.values().stream().max(Comparator.comparingInt(o -> o)).get();
+        return res;
     }
 
     public static void main(String[] args) {
