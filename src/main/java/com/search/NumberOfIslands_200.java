@@ -4,12 +4,13 @@ public class NumberOfIslands_200 {
     public int count = 0;
     public int[][] visited;
     public int numIslands(char[][] grid) {
-        visited = new int[grid.length][grid[0].length];
-        for (int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[0].length; j++){
-                if(visited[i][j] == 0 && grid[i][j] == '1'){
+        int n = grid.length, m = grid[0].length;
+        visited = new int[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == '1' && visited[i][j] == 0){
                     count++;
-                    DFS(grid, i, j);
+                    dfs(grid, i, j);
                 }
             }
         }
@@ -17,15 +18,17 @@ public class NumberOfIslands_200 {
         return count;
     }
 
-    public void DFS(char[][] grid, int l, int w){
-        if (l > grid.length || w > grid[0].length) return;
-        if(visited[l][w] == 1 || grid[l][w] == '0') return;
-        visited[l][w] = 1;
-        if(l + 1 < grid.length) DFS(grid, l + 1, w);
-        if(w + 1 < grid[0].length) DFS(grid, l, w + 1);
-        if(l - 1 >= 0) DFS(grid, l - 1, w);
-        if(w - 1 >= 0) DFS(grid, l, w - 1);
+    public void dfs(char[][] grid, int x, int y){
+        visited[x][y] = 1;
+        int n = grid.length, m = grid[0].length;
+        int[][] dirs = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+        for (int[] dir: dirs){
+            int nx = x + dir[0], ny = y + dir[1];
+            if (nx >= 0 && nx < n && ny >= 0 && ny < m && grid[nx][ny] == '1' && visited[nx][ny] == 0) dfs(grid, nx, ny);
+        }
     }
+
+
 
     public static void main(String[] args) {
         char[][] grid = new char[][]{{'1','1','1'},{'0','1','0'},
