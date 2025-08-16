@@ -2,57 +2,45 @@ package com.binary_tree;
 
 import javafx.util.Pair;
 import structure.TreeNode;
+import sun.print.PSPrinterJob;
 
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Queue;
+import java.util.*;
 
 public class AmountOfTimeForBinaryTreeToBeInfected_2385 {
-    private HashMap<TreeNode, TreeNode> parent = new HashMap<>();
-    TreeNode startNode = null;
-
     public int amountOfTime(TreeNode root, int start) {
-        prepare(root, start);
-        return infectTime(startNode);
-    }
+        Map<TreeNode, TreeNode> map = new HashMap<>();
+        TreeNode startNode = buildParentMap(root, null, map, start);
 
-    public void prepare(TreeNode root, int start){
         Queue<TreeNode> queue = new ArrayDeque<>();
-
-        queue.add(root);
+        Set<TreeNode> set = new HashSet<>();
+        queue.add(startNode);
+        set.add(startNode);
+        int res = -1;
         while (!queue.isEmpty()){
-            int size = queue.size();
-            for (int i = 0; i < size; i++){
-                TreeNode h = queue.poll();
-                if (h.val == start) startNode = h;
-                if (h.left != null){
-                    parent.put(h.left, h);
-                    queue.add(h.left);
-                }
-                if (h.right != null){
-                    parent.put(h.right, h);
-                    queue.add(h.right);
-                }
+            int curQueueSize = queue.size();
+            res++;
+            for (int i = 0; i < curQueueSize; i++) {
+                TreeNode s = queue.poll();
+                if (s.left != null && set.add(s.left)) queue.add(s.left);
+                if (s.right != null && set.add(s.right)) queue.add(s.right);
+                TreeNode pa = map.get(s);
+                if ( pa != null && set.add(pa)) queue.add(pa);
             }
+
         }
+
+        return res;
     }
 
-    public int infectTime(TreeNode startNode){
-        Queue<Pair<TreeNode, Integer>> queue = new ArrayDeque<>();
-        queue.add(new Pair<>(startNode, 0));
-        int maxTime = 0;
-        HashSet<Integer> visited = new HashSet<>();
-        while (!queue.isEmpty()){
-            Pair<TreeNode, Integer> p = queue.poll();
-            maxTime = Math.max(maxTime, p.getValue());
-            TreeNode n = p.getKey();
-            visited.add(n.val);
-            if (n.left != null && !visited.contains(n.left.val)) queue.add(new Pair<>(n.left, p.getValue() + 1));
-            if (n.right != null && !visited.contains(n.right.val)) queue.add(new Pair<>(n.right, p.getValue() + 1));
-            if (parent.containsKey(n) && !visited.contains(parent.get(n).val)) queue.add(new Pair<>(parent.get(n), p.getValue() + 1));
-        }
+    // build parent map and return start node
+    public TreeNode buildParentMap(TreeNode root, TreeNode parent, Map<TreeNode, TreeNode> map, int start){
+        if(root == null) return null;
 
-        return maxTime;
+        map.put(root, parent);
+        TreeNode left = buildParentMap(root.left, root, map, start);
+        TreeNode right = buildParentMap(root.right, root, map, start);
+
+        if (root.val == start) return root;
+        return left != null ? left : right;
     }
 }
