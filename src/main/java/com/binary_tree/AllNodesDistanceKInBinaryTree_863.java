@@ -6,43 +6,44 @@ import structure.TreeNode;
 import java.util.*;
 
 public class AllNodesDistanceKInBinaryTree_863 {
-    HashMap<TreeNode, TreeNode> parent = new HashMap();
-    ArrayList<Integer> res = new ArrayList<>();
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        dfs(root);
-        bfs(target, k);
+        Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+        buildParentGraph(root, null, parentMap);
+
+        List<Integer> res = new ArrayList<>();
+        // bfs
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        Set<TreeNode> visited = new HashSet<>();
+        visited.add(target);
+        queue.add(target);
+        int step = -1;
+        while (!queue.isEmpty()){
+            int curQueSize = queue.size();
+            step++;
+            if (step == k){
+                for (int i = 0; i < curQueSize; i++) {
+                    res.add(queue.poll().val);
+                }
+                return res;
+            }else {
+                for (int i = 0; i < curQueSize; i++) {
+                    TreeNode c = queue.poll();
+                    if (c.left != null && visited.add(c.left)) queue.add(c.left);
+                    if (c.right != null && visited.add(c.right)) queue.add(c.right);
+                    TreeNode p = parentMap.get(c);
+                    if (p != null && visited.add(p)) queue.add(p);
+                }
+            }
+        }
+
         return res;
     }
 
-    public void bfs(TreeNode target, int k) {
-        Deque<Pair<TreeNode, Integer>> q = new ArrayDeque<>();
-        q.add(new Pair<>(target, 0));
-        Set<TreeNode> visited = new HashSet<>();
+    public void buildParentGraph(TreeNode root, TreeNode parent, Map<TreeNode, TreeNode> parentMap){
+        if (root == null) return;
 
-        while (!q.isEmpty()) {
-            Pair<TreeNode, Integer> cur = q.poll();
-            TreeNode node = cur.getKey();
-            if(visited.contains(node)) continue;
-            visited.add(node);
-            int cnt = cur.getValue();
-
-            if(cur.getValue() == k) res.add(node.val);
-            if(node.left != null) q.add(new Pair<>(node.left, cnt + 1));
-            if(node.right != null) q.add(new Pair<>(node.right, cnt + 1));
-            if(parent.get(node) != null) q.add(new Pair<>(parent.get(node), cnt + 1));
-
-        }
-    }
-
-    public void dfs(TreeNode root){
-        if(root == null) return;
-        if(root.left != null) {
-            parent.put( root.left, root);
-        }
-        if(root.right != null) {
-            parent.put(root.right, root);
-        }
-        dfs(root.left);
-        dfs(root.right);
+        parentMap.put(root, parent);
+        buildParentGraph(root.left, root, parentMap);
+        buildParentGraph(root.right, root, parentMap);
     }
 }
