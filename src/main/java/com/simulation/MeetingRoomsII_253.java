@@ -29,27 +29,28 @@ public class MeetingRoomsII_253 {
 
     public int twoPointerWay(int[][] intervals){
         int n = intervals.length;
-        int[] start = new int[n];
-        int[] end = new int[n];
-        for (int i = 0; i < n; i++){
-            start[i] = intervals[i][0];
-            end[i] = intervals[i][1];
+        int[] starts = new int[n], ends = new int[n];
+        int i = 0;
+        for (int[] interval: intervals){
+            starts[i] = interval[0];
+            ends[i] = interval[1];
+            i++;
         }
+        Arrays.sort(starts);
+        Arrays.sort(ends);
 
-        Arrays.sort(start);
-        Arrays.sort(end);
-        int sp = 0, ep = 0, meetingRoomsCount = 0;
-
+        int sp = 0, ep = 0;
+        int roomNeed = 0;
         while (sp < n){
-            if (start[sp] >= end[ep]){
-                meetingRoomsCount--;
+            if (starts[sp] >= ends[ep]){
+                roomNeed--;
                 ep++;
             }
-            meetingRoomsCount++;
             sp++;
+            roomNeed++;
         }
 
-        return meetingRoomsCount;
+        return roomNeed;
     }
 
     public static void main(String[] args) {
