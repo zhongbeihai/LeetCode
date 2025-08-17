@@ -8,17 +8,17 @@ import java.util.Map;
 public class ConstructBinaryTreeFromPreorderAndInorder_105 {
     int[] preorder, inorder;
     int preorderIdx = 0;
-    Map<Integer, Integer> inorderIdxMap = new HashMap<>(); // map val to index in inorder
+     // map val to index in inorder
+    Map<Integer, Integer> inorderValToIdx = new HashMap<>();
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        if (preorder == null || inorder == null) return null;
-
         this.preorder = preorder;
         this.inorder = inorder;
-        for (int i = 0; i < inorder.length; i++) {
-            inorderIdxMap.put(inorder[i], i);
+        for (int i = 0; i < inorder.length; i++){
+            inorderValToIdx.put(inorder[i], i);
         }
 
-        return build(0, preorder.length - 1);
+        int n = preorder.length;
+        return build(0,  n - 1);
     }
 
     /**
@@ -32,11 +32,11 @@ public class ConstructBinaryTreeFromPreorderAndInorder_105 {
         if (inL > inR) return null;
 
         int val = preorder[preorderIdx++];
-        int idxInorder = inorderIdxMap.get(val);
+        int idx = inorderValToIdx.get(val);
 
         TreeNode root = new TreeNode(val);
-        root.left = build(inL, idxInorder - 1);
-        root.right = build(idxInorder + 1, inR);
+        root.left = build(inL, idx - 1);
+        root.right = build(idx + 1, inR);
 
         return root;
     }

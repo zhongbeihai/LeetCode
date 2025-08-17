@@ -4,7 +4,7 @@ import structure.TreeNode;
 import sun.reflect.generics.tree.Tree;
 
 public class FlattenBinaryTree_114 {
-    private TreeNode prev;
+    private TreeNode prev = null;
     public void flatten(TreeNode root) {
         if (root == null) return;
         flatten(root.right);
@@ -12,6 +12,7 @@ public class FlattenBinaryTree_114 {
 
         root.right = prev;
         root.left = null;
+
         prev = root;
     }
 
