@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReverseLinkedList_206 {
-
-
-
      public ListNode reverseList(ListNode head) {
           ListNode pre, cur, tem;
           pre = null;
