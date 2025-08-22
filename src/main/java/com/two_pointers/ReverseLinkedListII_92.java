@@ -12,29 +12,26 @@ import java.util.Stack;
  */
 public class ReverseLinkedListII_92 {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        if (head == null || head.next == null) return head;
+        if(head == null || head.next == null) return head;
         ListNode dummy = new ListNode(-1, head);
-       ListNode start = dummy;
-       ListNode n = head;
-       for (int i = 1; i < left; i++){
-           n = n.next;
-           start = start.next;
-       }
-       Stack<ListNode> stack = new Stack<>();
-       for (int i = 0; i < right - left + 1; i++){
-           stack.push(n);
-           n = n.next;
-       }
-       ListNode end = n;
+        ListNode start  = dummy, p = head;
+        for (int i = 1; i < left; i++){
+            start = start.next;
+            p = p.next;
+        }
+        Stack<ListNode> stack = new Stack<>();
+        for (int i = 0; i < right - left + 1; i++){
+            stack.push(p);
+            p = p.next;
+        }
+        ListNode end = p;
+        while (!stack.isEmpty()){
+            start.next = stack.pop();
+            start = start.next;
+        }
+        start.next = end;
 
-       while (!stack.isEmpty()){
-           ListNode tem = stack.pop();
-           start.next = tem;
-           start = tem;
-       }
-       start.next = end;
-
-       return head;
+        return dummy.next;
     }
 
 

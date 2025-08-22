@@ -2,6 +2,9 @@ package com.dequeue_and_priorityqueue;
 
 
 import java.util.ArrayDeque;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.PriorityQueue;
 
 /**
  * You are given an array of integers nums,
@@ -22,35 +25,23 @@ import java.util.ArrayDeque;
  */
 public class SlidingWindowMaximum_239 {
     public int[] maxSlidingWindow(int[] nums, int k) {
-        // maintain a monotonically increasing queue, so the head elem is always the biggest elem
-        // head    -> queue moving direction ->
-        //   |
-        //   3   ->  7  -> 9
-        int[] res = new int[nums.length - k + 1];
-        ArrayDeque<Integer> dq = new ArrayDeque<>();
-        int ind = 0;
-        // head element must be within [i - k + 1, i]
-        for(int i = 0; i < nums.length; i++){
-            // while the window is sliding , so we must keep the head element within the range
-            while(!dq.isEmpty() && dq.peek() < i - k + 1){
-                dq.pollFirst();
-            }
-            //  Since the queue is monotonically increasing, so the new one must be bigger
-            // than the last one in the queue or the new one would be abandoned
-            while(!dq.isEmpty() && nums[dq.peekLast()] < nums[i]){
-                dq.pollLast();
-            }
-            dq.offer(i);
+        int n = nums.length;
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        int[] res = new int[n - k + 1];
 
-            if(i >= k - 1){
-                res[ind++] = nums[dq.peek()];
-            }
+        for(int right = 0; right < n; right++){
+            while (!deque.isEmpty() && deque.peekFirst() <= right - k) deque.pollFirst();
+            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[right]) deque.pollLast();
+            deque.addLast(right);
+            if (right - k  + 1 >= 0) res[right - k + 1] = nums[deque.peekFirst()];
         }
+
         return res;
     }
 
     public static void main(String[] args) {
         SlidingWindowMaximum_239 s = new SlidingWindowMaximum_239();
-        s.maxSlidingWindow(new int[]{1,3,-1,-3,5,3,6,7}, 3);
+        // s.maxSlidingWindow(new int[]{1,3,-1,-3,5,3,6,7}, 3);
+        s.maxSlidingWindow(new int[]{7,2,4}, 2);
     }
 }
