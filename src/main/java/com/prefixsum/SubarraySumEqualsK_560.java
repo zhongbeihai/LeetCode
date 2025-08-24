@@ -11,25 +11,18 @@ import java.util.HashMap;
  */
 public class SubarraySumEqualsK_560 {
     public int subarraySum(int[] nums, int k) {
-        int ans = 0;
-        long curSum = 0;
-        // <sum, freq>
-        HashMap<Long, Integer> map = new HashMap<>();
-        // Sum is 0 occurs once
-        map.put((long)0, 1);
-        for(int i = 0; i < nums.length; i++){
-            // sum[i - j] = preSum[i] - preSum[j - 1]
-            // if exit K = preSum[i] - preSum[j-1]
-            // exit preSum[j-1] = preSum[i] - k
-            curSum += nums[i];
-            if(map.containsKey(curSum - k)){
-                ans += map.get(curSum - k);
-            }
-            map.put(curSum, map.getOrDefault(curSum, 0) + 1);
+        long curSum = 0L;
+        HashMap<Long, Integer> fre = new HashMap<>();
+        fre.put(0L, 1);
+        int res = 0;
+        for (int num: nums){
+            curSum += num;
+            fre.put(curSum, fre.getOrDefault(curSum, 0) + 1);
+            long need = curSum - k;
+            if (fre.containsKey(need)) res += fre.get(need);
         }
 
-        System.out.println(ans);
-        return ans;
+        return res;
     }
 
     public static void main(String[] args) {

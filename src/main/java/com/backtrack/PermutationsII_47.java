@@ -3,35 +3,27 @@ package com.backtrack;
 import java.util.*;
 
 public class PermutationsII_47 {
-    private Set<List<Integer>> res = new HashSet<>();
-
+    private List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> permuteUnique(int[] nums) {
-        boolean[] used = new boolean[nums.length];
-        Arrays.fill(used, false);
-        backTracking(nums, used, 0, new ArrayList<>());
-        ArrayList<List<Integer>> resL = new ArrayList<>();
-        resL.addAll(res);
-        return resL;
+        backtrack(nums, new boolean[nums.length], new ArrayList<>());
+
+        return res;
     }
 
-    public void backTracking(int[] nums, boolean[] used, int index, List<Integer> tem){
-        if(index == nums.length){
+    public void backtrack(int[] nums, boolean[] used, List<Integer> tem){
+        if (tem.size() == nums.length){
             res.add(new ArrayList<>(tem));
             return;
         }
 
-        for(int i = 0; i < nums.length; i++){
-            if(used[i]){
-                continue;
+        for (int i = 0; i < nums.length; i++){
+            if (!used[i]){
+                tem.add(nums[i]);
+                used[i] = true;
+                backtrack(nums, used,  tem);
+                used[i] = false;
+                tem.remove(tem.size() - 1);
             }
-
-            tem.add(nums[i]);
-            used[i] = true;
-
-            backTracking(nums, used, index + 1, tem);
-
-            tem.remove(tem.size() - 1);
-            used[i] = false;
         }
     }
 
