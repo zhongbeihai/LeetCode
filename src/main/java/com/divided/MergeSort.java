@@ -3,32 +3,29 @@ package com.divided;
 public class MergeSort {
     public static void mergeSort(int[] arr){
         if(arr == null || arr.length <= 1) return;
-        mergeSort(arr, 0, arr.length - 1);
+        divide(arr, 0, arr.length - 1);
     }
 
-    public static void mergeSort(int[] arr, int left, int right){
-        // stop condition
-        if (left >= right) return;
-        int mid = left + (right - left) / 2;
+    public static void divide(int[] arr, int start, int end){
+        if (start >= end) return;
 
-        mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
+        int mid = start + (end - start) / 2;
+        divide(arr, start, mid);
+        divide(arr, mid + 1, end);
 
-        merge(arr, left, mid, right);
+        merge(arr, start, mid, end);
     }
 
     public static void merge(int[] arr, int left, int mid, int right){
         int[] tem = new int[right - left + 1];
         int i = left, j = mid + 1, k = 0;
-
         while (i <= mid && j <= right){
-            if (arr[i] <= arr[j]){
+            if (arr[i] <= arr[j]) {
                 tem[k++] = arr[i++];
-            }else {
+            } else {
                 tem[k++] = arr[j++];
             }
         }
-
         while (i <= mid) tem[k++] = arr[i++];
         while (j <= right) tem[k++] = arr[j++];
 
@@ -38,6 +35,10 @@ public class MergeSort {
     }
 
     public static void main(String[] args) {
-        MergeSort.mergeSort(new int[]{19,2,412,32,24,23,94,4});
+        int[] arr = new int[]{19,2,412,32,24,23,94,4};
+        MergeSort.mergeSort(arr);
+        for (int i: arr ){
+            System.out.println(i + " ");
+        }
     }
 }
