@@ -6,30 +6,28 @@ public class MinimumWindowSubstring_76 {
     public String minWindow(String s, String t) {
         if (s.length() < t.length()) return "";
 
-        int[] need = new int[126];
-        char[] ss = s.toCharArray();
-        char[] tt = t.toCharArray();
-        int missing = tt.length;
+        char[] ss = s.toCharArray(), tt = t.toCharArray();
+        int missing = tt.length, left = 0, bestLeft = 0, bestLen = Integer.MAX_VALUE;
+        int[] need = new int[128];
         for (char c: tt) need[c]++;
 
-        int left = 0, bestLeft = -1, bestLen = Integer.MAX_VALUE;
         for (int right = 0; right < ss.length; right++){
-            char cur = ss[right];
-            if (need[cur] > 0) missing--;
-            need[cur]--;
+            if (need[ss[right]] > 0) missing--;
+            need[ss[right]]--;
 
             while (missing == 0 && left <= right){
-                if (right - left + 1 < bestLen){
+                if (right - left + 1 < bestLen) {
                     bestLen = right - left + 1;
                     bestLeft = left;
                 }
+
+                if (need[ss[left]] == 0) missing++;
                 need[ss[left]]++;
-                if (need[ss[left]] > 0) missing++;
                 left++;
             }
         }
 
-        return bestLeft != - 1 ? s.substring(bestLeft, bestLeft + bestLen) : "";
+        return bestLen == Integer.MAX_VALUE ? "" : s.substring(bestLeft, bestLeft + bestLen);
     }
 
     public boolean include(Map<Character, Integer> s, Map<Character, Integer> t){
