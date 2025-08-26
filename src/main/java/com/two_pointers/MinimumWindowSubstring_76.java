@@ -1,31 +1,35 @@
 package com.two_pointers;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class MinimumWindowSubstring_76 {
     public String minWindow(String s, String t) {
-        Map<Character, Integer> tfre = new HashMap<>();
-        Map<Character, Integer> sfre = new HashMap<>();
-        char[] tt = t.toCharArray();
-        char[] ss = s.toCharArray();
-        for (char c: tt){
-            tfre.put(c, tfre.getOrDefault(c, 0) + 1);
-        }
+        if (s.length() < t.length()) return "";
 
-        int left = 0, right = 0, n = s.length();
-        String res = s + "null";
-        for (right = 0; right < n; right++){
-            sfre.put(ss[right], sfre.getOrDefault(ss[right], 0) + 1);
-            while (include(sfre, tfre) && left <= right){
-                if (right - left + 1 < res.length()) res = s.substring(left, right + 1);
-                sfre.put(ss[left], sfre.get(ss[left]) - 1);
+        int[] need = new int[126];
+        char[] ss = s.toCharArray();
+        char[] tt = t.toCharArray();
+        int missing = tt.length;
+        for (char c: tt) need[c]++;
+
+        int left = 0, bestLeft = -1, bestLen = Integer.MAX_VALUE;
+        for (int right = 0; right < ss.length; right++){
+            char cur = ss[right];
+            if (need[cur] > 0) missing--;
+            need[cur]--;
+
+            while (missing == 0 && left <= right){
+                if (right - left + 1 < bestLen){
+                    bestLen = right - left + 1;
+                    bestLeft = left;
+                }
+                need[ss[left]]++;
+                if (need[ss[left]] > 0) missing++;
                 left++;
             }
         }
 
-        return !res.equals(s + "null") ? res : "";
+        return bestLeft != - 1 ? s.substring(bestLeft, bestLeft + bestLen) : "";
     }
 
     public boolean include(Map<Character, Integer> s, Map<Character, Integer> t){
