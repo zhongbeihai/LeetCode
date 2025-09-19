@@ -16,7 +16,7 @@ public class Allocator {
         Integer pickL = null, pickR = null;
         for (Map.Entry<Integer, Integer> e: free.entrySet()){
             int l = e.getKey(), r = e.getValue();
-            if (r - l + 1 > size) {pickL = l; pickR = r; break;}
+            if (r - l + 1 >= size) {pickL = l; pickR = r; break;}
         }
 
         if (pickL == null) return -1;
@@ -29,7 +29,7 @@ public class Allocator {
     }
 
     public int freeMemory(int mID) {
-        List<int[]> segs = used.get(mID);
+        List<int[]> segs = used.remove(mID);
         if (segs == null || segs.isEmpty()) return 0;
 
         int freed = 0;
@@ -44,6 +44,16 @@ public class Allocator {
                 r = Math.max(r, le.getValue());
                 free.remove(le.getKey());
             }
+
+            Map.Entry<Integer, Integer> re = free.ceilingEntry(l);
+            if (re != null && re.getKey() <= r + 1){
+                r = Math.max(r, re.getValue());
+                free.remove(re.getKey());
+                re = free.ceilingEntry(l);
+            }
+            free.put(l, r);
         }
+
+        return freed;
     }
 }
