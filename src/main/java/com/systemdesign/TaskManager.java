@@ -40,10 +40,7 @@ public class TaskManager {
     }
 
     public void edit(int taskId, int newPriority) {
-        Task oldTask = map.get(taskId);
-        Task newTask = new Task(oldTask.userId, taskId, newPriority);
-        map.put(taskId, newTask);
-        pq.add(newTask);
+
     }
 
     public void rmv(int taskId) {
@@ -51,15 +48,5 @@ public class TaskManager {
     }
 
     public int execTop() {
-        while (!pq.isEmpty()){
-            Task task = pq.poll();
-            Task curTask = map.get(task.taskId);
-
-            if (curTask != null && task.priority == curTask.priority&& task.userId == curTask.userId){
-                map.remove(task.taskId);
-                return task.userId;
-            }
-        }
-        return -1;
     }
 }
