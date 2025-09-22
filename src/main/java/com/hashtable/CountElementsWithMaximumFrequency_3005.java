@@ -8,11 +8,12 @@ public class CountElementsWithMaximumFrequency_3005 {
         HashMap<Integer, Integer> fre = new HashMap<>();
         int maxFre = 0, c = 0;
         for (int num: nums){
-            fre.put(num, fre.getOrDefault(num, 0) + 1);
-            if (fre.get(num) > maxFre){
-                maxFre = fre.get(num);
+            int f = fre.getOrDefault(num, 0) + 1;
+            fre.put(num, f);
+            if (f > maxFre){
+                maxFre = f;
                 c = 1;
-            } else if (fre.get(num) == maxFre) {
+            } else if (f == maxFre) {
                 c++;
             }
         }
