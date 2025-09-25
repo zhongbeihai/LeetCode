@@ -10,17 +10,22 @@ public class ExclusiveTimeOfFucntions_636 {
 
         for (String log: logs){
             String[] ss = log.split(":");
-            int id = Integer.parseInt(ss[0]), curTime = Integer.parseInt(ss[2]);
+            int id = Integer.parseInt(ss[0]), curTime = Integer.parseInt(ss[1]);
             boolean isStart = ss[1].charAt(0) == 's';
 
             if (isStart){
-                if (!stack.isEmpty()) res[stack.peek()] += curTime - prevTime;
-                stack.push(id);
+                if (stack.isEmpty()) {
+                    stack.push(id);
+                    prevTime = curTime;
+                    continue;
+                }
+                res[stack.peek()] += curTime - prevTime;
                 prevTime = curTime;
+                stack.push(id);
             }else {
-                stack.pop();
                 res[id] += curTime - prevTime + 1;
                 prevTime = curTime + 1;
+
             }
         }
 
