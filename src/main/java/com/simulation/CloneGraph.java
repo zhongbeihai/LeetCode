@@ -24,23 +24,22 @@ public class CloneGraph {
     public Node cloneGraph(Node node) {
         if (node == null) return null;
 
-        Map<Node, Node> oriToClone = new HashMap<>();
+        HashMap<Node, Node> oriToClone = new HashMap<>();
         Queue<Node> queue = new ArrayDeque<>();
 
         oriToClone.put(node, new Node(node.val));
         queue.add(node);
+        while(!queue.isEmpty()){
+            Node origin = queue.poll();
+            Node clone = oriToClone.get(origin);
 
-        while (!queue.isEmpty()){
-            Node cur = queue.poll();
-            Node curClone = oriToClone.get(cur);
-
-            for (Node nei: cur.neighbors){
+            for (Node nei: origin.neighbors){
                 if (!oriToClone.containsKey(nei)){
-                    Node neiClone = new Node(nei.val);
+                    Node newClone = new Node(nei.val);
                     queue.add(nei);
-                    oriToClone.put(nei, neiClone);
+                    oriToClone.put(nei, newClone);
                 }
-                curClone.neighbors.add(oriToClone.get(nei));
+                clone.neighbors.add(oriToClone.get(nei));
             }
         }
 
