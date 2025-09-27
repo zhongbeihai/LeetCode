@@ -5,23 +5,24 @@ import java.util.HashSet;
 public class LongestSubstringWithoutRepeatingCharacters_3 {
     public int lengthOfLongestSubstring(String s) {
         if (s.isEmpty()) return 0;
-        char[] ss = s.toCharArray();
+
+        int left = 0, res = 1;
         int[] fre = new int[128];
-        int left = 0, max = 1;
-        for (int right = 0; right < ss.length; right++){
-            fre[ss[right]]++;
-            while (fre[ss[right]] > 1){
-                fre[ss[left]]--;
+        for (int right = 0; right < s.length(); right++){
+            int cur = s.charAt(right);
+            fre[cur]++;
+            while (left <= right && fre[cur] > 1){
+                fre[s.charAt(left)]--;
                 left++;
             }
-            max = Math.max(max, right - left + 1);
+            res = Math.max(res, right - left + 1);
         }
 
-        return max;
+        return res;
     }
 
     public static void main(String[] args) {
         LongestSubstringWithoutRepeatingCharacters_3 l = new LongestSubstringWithoutRepeatingCharacters_3();
-        l.lengthOfLongestSubstring("abcabcbb");
+        l.lengthOfLongestSubstring("pwwkew");
     }
 }
