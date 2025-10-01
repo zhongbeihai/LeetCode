@@ -11,18 +11,19 @@ public class GenerateParentheses_22 {
         return res;
     }
 
-    public void backtrack(int n, int numOfLeftP, int numOfRightP, String sb){
-        if (sb.length() == n * 2) {
-            res.add(sb);
+    public void backtrack(int n, int lp, int rp, String tem){
+        // stop condition
+        if (tem.length() == n * 2){
+            res.add(tem);
             return;
         }
 
-        if (numOfLeftP < n){
-            backtrack(n, numOfLeftP + 1, numOfRightP, sb+"(");
+        if (lp < n){
+            backtrack(n, lp + 1, rp, tem + "(");
         }
 
-        if (numOfRightP < numOfLeftP){
-            backtrack(n, numOfLeftP, numOfRightP + 1, sb+")");
+        if (rp < lp){
+            backtrack(n, lp, rp + 1, tem + ")");
         }
     }
 
