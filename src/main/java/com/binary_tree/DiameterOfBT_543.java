@@ -3,21 +3,19 @@ package com.binary_tree;
 import structure.TreeNode;
 
 public class DiameterOfBT_543 {
-    private int maxx = Integer.MIN_VALUE;
-
+    private int maxDiameter = 0;
     public int diameterOfBinaryTree(TreeNode root) {
         dfs(root);
-        return maxx;
+        return maxDiameter;
     }
 
     public int dfs(TreeNode root){
         if (root == null) return 0;
 
-        int left = dfs(root.left);
-        int right = dfs(root.right);
+        int leftDepth = dfs(root.left);
+        int rightDepth = dfs(root.right);
+        maxDiameter = Math.max(maxDiameter, leftDepth + rightDepth);
 
-        maxx = Math.max(maxx, left + right + 1);
-
-        return Math.max(left + 1, right + 1);
+        return Math.max(leftDepth, rightDepth) + 1;
     }
 }
