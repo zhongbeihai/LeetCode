@@ -1,35 +1,40 @@
 package com.simulation;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Stack;
+import java.util.*;
 
 public class SimplifyPath_71 {
     public String simplifyPath(String path) {
-        String[] sep = path.split("/");
-
-        ArrayDeque<String> deque = new ArrayDeque<>();
-        
-        for (String p: sep){
-            if (p.equals(".") || p.isEmpty()) {
-            } else if (p.equals("..")) {
-                deque.pollLast();
+        // split path
+        StringBuilder sb = new StringBuilder();
+        List<String> levels = new ArrayList<>();
+        for (int i = 0; i <= path.length(); i++) {
+            if (i == path.length() || path.charAt(i) == '/'){
+                String cur = sb.toString();
+                if (cur.equals("..")){
+                    if (levels.size() > 0) levels.remove(levels.size() - 1);
+                } else {
+                    if (!cur.equals(".") && !cur.isEmpty()) levels.add(cur);
+                }
+                sb = new StringBuilder();
             }else {
-                deque.addLast("/" + p);
+                sb.append(path.charAt(i));
             }
         }
 
-        if (deque.isEmpty()) return "/";
-        StringBuilder sb = new StringBuilder();
-        while (!deque.isEmpty()){
-            sb.append(deque.pollFirst());
+        StringBuilder ssb = new StringBuilder();
+        ssb.append('/');
+        for (String s: levels){
+            ssb.append(s);
+            ssb.append('/');
         }
-        return sb.toString();
+        if (ssb.length() != 1 && ssb.charAt(ssb.length() - 1) == '/')ssb.delete(ssb.length() - 1, ssb.length());
+
+        return ssb.toString();
     }
 
     public static void main(String[] args) {
         SimplifyPath_71 s = new SimplifyPath_71();
-        s.simplifyPath("/.../a/../b////c/../d/./");
+        // s.simplifyPath("/.../a/../b////c/../d/./");
+        s.simplifyPath("/a/./b/../../c/");
     }
 }
