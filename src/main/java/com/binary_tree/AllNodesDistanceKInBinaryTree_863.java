@@ -2,36 +2,33 @@ package com.binary_tree;
 
 import javafx.util.Pair;
 import structure.TreeNode;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.*;
 
 public class AllNodesDistanceKInBinaryTree_863 {
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        Map<TreeNode, TreeNode> parentMap = new HashMap<>();
-        buildParentGraph(root, null, parentMap);
+        HashMap<TreeNode, TreeNode> parentsMap = new HashMap<>();
+        buildParentMap(root, null, parentsMap);
 
         List<Integer> res = new ArrayList<>();
-        // bfs
         Queue<TreeNode> queue = new ArrayDeque<>();
-        Set<TreeNode> visited = new HashSet<>();
+        HashSet<TreeNode> visited = new HashSet<>();
         visited.add(target);
         queue.add(target);
         int step = -1;
         while (!queue.isEmpty()){
-            int curQueSize = queue.size();
             step++;
+
             if (step == k){
-                for (int i = 0; i < curQueSize; i++) {
-                    res.add(queue.poll().val);
-                }
-                return res;
+                for (int i = 0; i < queue.size(); i++) res.add(queue.poll().val);
             }else {
-                for (int i = 0; i < curQueSize; i++) {
-                    TreeNode c = queue.poll();
-                    if (c.left != null && visited.add(c.left)) queue.add(c.left);
-                    if (c.right != null && visited.add(c.right)) queue.add(c.right);
-                    TreeNode p = parentMap.get(c);
-                    if (p != null && visited.add(p)) queue.add(p);
+                for (int i = 0; i < queue.size(); i++){
+                    TreeNode cur = queue.poll();
+                    if (cur.left != null && visited.add(cur.left)) queue.add(cur.left);
+                    if (cur.right != null && visited.add(cur.right)) queue.add(cur.right);
+                    TreeNode parent = parentsMap.get(cur);
+                    if (parent != null && visited.add(parent)) queue.add(parent);
                 }
             }
         }
@@ -39,11 +36,11 @@ public class AllNodesDistanceKInBinaryTree_863 {
         return res;
     }
 
-    public void buildParentGraph(TreeNode root, TreeNode parent, Map<TreeNode, TreeNode> parentMap){
-        if (root == null) return;
+    private void buildParentMap(TreeNode cur, TreeNode parent, Map<TreeNode, TreeNode> map){
+        if (cur == null) return;
+        map.put(cur, parent);
 
-        parentMap.put(root, parent);
-        buildParentGraph(root.left, root, parentMap);
-        buildParentGraph(root.right, root, parentMap);
+        buildParentMap(cur.left, cur, map);
+        buildParentMap(cur.right, cur, map);
     }
 }
