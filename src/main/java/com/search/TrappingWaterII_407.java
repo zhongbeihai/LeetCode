@@ -1,42 +1,37 @@
 package com.search;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class TrappingWaterII_407 {
     public int trapRainWater(int[][] heightMap) {
         int m = heightMap.length, n = heightMap[0].length;
-        boolean[][] visited = new boolean[m][n];
-        PriorityQueue<int[]> pq = new PriorityQueue<>(((o1, o2) -> o1[0] - o2[0]));
-        int[][] dirs = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(i -> i[2])); //i[] -> {x, y, height}
 
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
-                if(i== 0 || i== m-1 || j==0 || j== n-1){
-                    pq.add(new int[]{heightMap[i][j], i, j});
-                    visited[i][j]=true;
-                }
+        int[][] dirs = new int[][]{{1,0},{-1, 0}, {0, 1}, {0, -1}};
+        boolean[][] visited = new boolean[m][n];
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (i == 0 || j == 0 || i == m - 1 || j == n - 1) {
+                    pq.add(new int[]{i, j, heightMap[i][j]});
+                    visited[i][j] = true;
+                 }
             }
         }
 
         int res = 0;
         while (!pq.isEmpty()){
-            int[] c = pq.poll();
-            int cv = c[0], cx = c[1], cy = c[2];
+            int[] cur = pq.poll();
+            int x = cur[0], y = cur[1], curH = cur[2];
 
-            for(int[] dir: dirs){
-                int nx = cx + dir[0], ny = cy + dir[1];
-                if(nx >= 0 && ny >= 0 && nx < m && ny < n && !visited[nx][ny]){
-                    int nv = heightMap[nx][ny];
-                    if(cv - nv > 0){
-                        res += (cv - nv);
-                        pq.add(new int[]{cv, nx, ny});
-                    }
-                    else {
-                        pq.add(new int[]{nv, nx, ny});
-                    }
-                    visited[nx][ny]=true;
+            for (int[] dir: dirs){
+                int nx = dir[0] + x, ny = dir[1] + y;
+                if (nx >= 0 && ny >= 0 && nx < m && ny < n && !visited[nx][ny]){
+                    int neiHeight = heightMap[nx][ny];
+                    if (neiHeight < curH) res += curH - neiHeight;
+                    pq.add(new int[]{nx, ny, Math.max(neiHeight, curH)});
+                    visited[nx][ny] = true;
                 }
-
             }
         }
 
