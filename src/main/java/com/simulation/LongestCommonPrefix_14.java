@@ -4,17 +4,17 @@ public class LongestCommonPrefix_14 {
     public String longestCommonPrefix(String[] strs) {
         if (strs == null) return "";
 
-        String common = strs[0];
-
-        for (int i = 1; i < strs.length; i++){
-            while (!strs[i].startsWith(common)){
-                common = common.substring(0, common.length() - 1);
+        String ori = strs[0];
+        for (int i = 1; i < strs.length; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < ori.length() && j < strs[i].length(); j++) {
+                if (ori.charAt(j) == strs[i].charAt(j)) sb.append(ori.charAt(j));
+                else break;
             }
-
-            if (common.isEmpty()) return "";
+            ori = sb.toString();
         }
 
-        return common;
+        return ori;
     }
 
     public static void main(String[] args) {
