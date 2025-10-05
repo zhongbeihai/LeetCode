@@ -4,31 +4,35 @@ import java.util.Arrays;
 
 public class KokoEatingBananas_875 {
     public int minEatingSpeed(int[] piles, int h) {
-        int min = 0, max = Arrays.stream(piles).max().getAsInt();
-        while (min < max){
-            int mid = (max + min) / 2;
-            if (isValid(piles, h, mid)){
-                max = mid;
+        Arrays.sort(piles);
+        int n = piles.length;
+        int low = piles[0], high = piles[n - 1];
+        while (low < high){
+            int mid = low + (high - low) / 2;
+            if (isValid(piles, mid, h)){
+                high = mid;
             }else {
-                min = mid + 1;
+                low = mid + 1;
             }
         }
 
-        return min;
+        return low;
     }
 
-    public boolean isValid(int[] piles, int h, int k){
-        double count = 0;
-        for (int pile: piles){
-            count +=  Math.ceil(pile / (double) k);
+    public boolean isValid(int[] piles, int k, int h){
+        int n = piles.length;
+        for (int i = n - 1; i >= 0; i--){
+            h -= (int) Math.max(1, Math.ceil(piles[i] / (double)k));
+            if (h < 0) return false;
         }
 
-        return count <= h;
+        return true;
     }
 
     public static void main(String[] args) {
         KokoEatingBananas_875 k = new KokoEatingBananas_875();
         // k.minEatingSpeed(new int[]{805306368,805306368,805306368}, 1000000000);
-        k.isValid(new int[]{805306368,805306368,805306368}, 1000000000, 2);
+        // k.isValid(new int[]{805306368,805306368,805306368}, 1000000000, 2);
+        k.minEatingSpeed(new int[]{3,6,7,11}, 8);
     }
 }
