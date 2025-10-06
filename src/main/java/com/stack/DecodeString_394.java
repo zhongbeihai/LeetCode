@@ -1,38 +1,39 @@
 package com.stack;
 
+import javafx.util.Pair;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Stack;
 
 public class DecodeString_394 {
     public String decodeString(String s) {
-        Deque<Integer> counts = new ArrayDeque<>();
-        Deque<StringBuilder> stack = new ArrayDeque<>();
+        Stack<Integer> numStack = new Stack<>();
+        Stack<StringBuilder> stringStack = new Stack<>();
 
-        char[] ss = s.toCharArray();
         int num = 0;
-        StringBuilder curStringBuilder = new StringBuilder();
-        for (char curChar: ss){
-            if (Character.isDigit(curChar)){
-                num = num * 10 + curChar - '0';
-            } else if (curChar == '[') {
-                counts.push(num);
-                stack.push(curStringBuilder);
-                curStringBuilder = new StringBuilder();
+        StringBuilder cur = new StringBuilder();
+        for (char c: s.toCharArray()){
+            if (Character.isDigit(c)){
+                num = num * 10 + c - '0';
+            } else if (c == '[') {
+                numStack.push(num);
+                stringStack.push(cur);
+                cur = new StringBuilder();
                 num = 0;
-            } else if (curChar == ']') {
-                int times = counts.pop();
-                StringBuilder prev = stack.pop();
-                for (int i = 0; i < times; i++) {
-                    prev.append(curStringBuilder);
+            } else if (c == ']') {
+                StringBuilder prev = stringStack.pop();
+                int times = numStack.pop();
+                for (int i = 0; i < times; i++){
+                    prev.append(cur);
                 }
-                curStringBuilder = prev;
+                cur = prev;
             }else {
-                curStringBuilder.append(curChar);
+                cur.append(c);
             }
         }
 
-        return curStringBuilder.toString();
+        return stringStack.pop().toString();
     }
 
     public static void main(String[] args) {
