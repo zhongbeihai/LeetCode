@@ -47,6 +47,7 @@ public class PacificAlanticWaterFlow_417 {
     }
 
     void bfs(int[][] heights, Queue<int[]> queue, boolean[][] pac){
+        int m = heights.length, n = heights[0].length;
         while(!queue.isEmpty()){
             int[] cur = queue.poll();
             int x = cur[0], y = cur[1], h = heights[x][y];
