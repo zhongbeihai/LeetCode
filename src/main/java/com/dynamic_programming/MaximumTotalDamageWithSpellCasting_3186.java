@@ -9,28 +9,24 @@ public class MaximumTotalDamageWithSpellCasting_3186 {
             fre.put(p, fre.getOrDefault(p, 0) + 1);
         }
 
-        List<Integer> key = new ArrayList<>(fre.keySet());
-        Collections.sort(key);
-        int n = key.size();
-        long[] dp = new long[n];
-        long res = 0;
-        for (int i = 0; i < n; i++){
-            int thisKey = key.get(i);
-            int j = i - 1;
-            while (j >= 0){
-                if (key.get(j) > thisKey - 3) j--;
-                else break;
-            }
-            long take  = (long) fre.get(thisKey) * thisKey;
-            if (j >= 0) take += dp[j];
+        List<Integer> spellKind = new ArrayList<>(fre.keySet());
+         Collections.sort(spellKind);
 
-            long skip = i > 0 ? dp[i - 1]: 0;
-            dp[i] = Math.max(skip, take);
+         long[] dp = new long[spellKind.size()];
+         for (int i = 0; i < spellKind.size(); i++){
+             int j = i - 1;
+             while (j >= 0){
+                 if (spellKind.get(j) > spellKind.get(i) - 3) j--;
+                 else break;
+             }
+             long take = j >= 0 ? dp[j] : 0;
+             take += (long) spellKind.get(i) * fre.get(spellKind.get(i));
+             long skip = i - 1 >= 0 ? dp[i - 1] : 0;
 
-            res = Math.max(res, dp[i]);
-        }
+             dp[i] = Math.max(take, skip);
+         }
 
-        return res;
+         return dp[spellKind.size() - 1];
     }
 
     public static void main(String[] args) {
