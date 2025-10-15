@@ -17,7 +17,7 @@ public class AdjacentIncreasingSubarraysDetectionII_3350 {
 
         int l = 0, r = n / 2;
         while (l < r){
-            int mid = (l + r) >>> 1;
+            int mid = (l + r + 1) >>> 1;
             if (validK(L, R, mid)){
                 l = mid;
             }else {
