@@ -2,11 +2,17 @@ package com.search;
 
 public class Search2DMatrixII_240 {
     public boolean searchMatrix(int[][] matrix, int target) {
-        int m = matrix.length, n = matrix[0].length;
-        for (int i = 0; i < m; i++){
-            int[] col = matrix[i];
-            int idx = binarySearch(col, target);
-            if (idx != n && matrix[i][idx] == target) return true;
+        int n = matrix.length, m = matrix[0].length;
+
+        int row = 0, col = m - 1;
+
+        while (row < n && col >= 0){
+            if (matrix[row][col] == target) return true;
+            if (matrix[row][col] > target){
+                col--;
+            }else {
+                row++;
+            }
         }
 
         return false;
