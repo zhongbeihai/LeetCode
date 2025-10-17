@@ -4,11 +4,12 @@ import javafx.util.Pair;
 
 public class KthSmallestElementInASortedMatrix_378 {
     public int kthSmallest(int[][] matrix, int k) {
-        int n = matrix.length, N = n * n;
+        int n = matrix.length;
         int low = matrix[0][0], high = matrix[n - 1][n - 1];
+
         while (low < high){
-            int mid = (low + high) >>> 1;
-            if (countLE(matrix, mid) >= k){
+            int mid = low + (high - low) / 2;
+            if (count(matrix, mid) >= k){
                 high = mid;
             }else {
                 low = mid + 1;
@@ -18,20 +19,25 @@ public class KthSmallestElementInASortedMatrix_378 {
         return low;
     }
 
-    public int countLE(int[][] matrix, int mid){
-        int n = matrix[0].length;
-        int i = n - 1, j = 0, cnt = 0;
-        while (i >= 0 && j < n){
-            if (matrix[i][j] <= mid){
-                cnt += i + 1;
-                j++;
+    public int count(int[][] matrix, int mid){
+        int n = matrix.length;
+        int row = 0, col = n - 1;
+        int cnt = 0;
+
+        while (row < n && col >= 0){
+            if (matrix[row][col] <= mid){
+                cnt += col + 1;
+                row++;
             }else {
-                i--;
+                col--;
             }
         }
 
         return cnt;
     }
+
+
+
 
     public static void main(String[] args) {
         KthSmallestElementInASortedMatrix_378 k = new KthSmallestElementInASortedMatrix_378();
