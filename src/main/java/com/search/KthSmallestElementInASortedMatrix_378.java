@@ -41,6 +41,6 @@ public class KthSmallestElementInASortedMatrix_378 {
 
     public static void main(String[] args) {
         KthSmallestElementInASortedMatrix_378 k = new KthSmallestElementInASortedMatrix_378();
-        k.kthSmallest(new int[][]{{1,2},{1,3}}, 3);
+        k.kthSmallest(new int[][]{{1,5,9},{10,11,13},{12,13,15}}, 3);
     }
 }

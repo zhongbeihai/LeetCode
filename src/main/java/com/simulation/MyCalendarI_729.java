@@ -13,16 +13,21 @@ public class MyCalendarI_729 {
         cal = new TreeMap();
     }
 
-    public boolean book(int start, int end) {
-        Integer floorKey = cal.floorKey(start);
-        Integer ceilingKey = cal.ceilingKey(start);
-        if(floorKey != null && cal.get(floorKey) > start) {
-            return false;
+    public boolean book(int startTime, int endTime) {
+        cal.put(startTime, cal.getOrDefault(startTime, 0) + 1);
+        cal.put(endTime, cal.getOrDefault(endTime, 0) - 1);
+
+        int active = 0;
+        for (int v: cal.values()){
+            active += v;
+
+            if (active > 1){
+                // rollback;
+                cal.put(startTime, cal.get(startTime) - 1);
+                cal.put(endTime, cal.get(endTime) + 1);
+                return false;
+            }
         }
-        if(ceilingKey != null && cal.get(ceilingKey) <= end) {
-            return false;
-        }
-        cal.put(start, end);
         return true;
     }
 }
