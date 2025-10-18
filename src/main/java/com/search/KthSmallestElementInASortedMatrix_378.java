@@ -21,21 +21,20 @@ public class KthSmallestElementInASortedMatrix_378 {
 
     public int count(int[][] matrix, int mid){
         int n = matrix.length;
+        int count = 0;
         int row = 0, col = n - 1;
-        int cnt = 0;
 
         while (row < n && col >= 0){
             if (matrix[row][col] <= mid){
-                cnt += col + 1;
+                count += col + 1;
                 row++;
             }else {
                 col--;
             }
         }
 
-        return cnt;
+        return count;
     }
-
 
 
 
