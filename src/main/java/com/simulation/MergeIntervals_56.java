@@ -8,25 +8,24 @@ import java.util.stream.Collectors;
 
 public class MergeIntervals_56 {
     public int[][] merge(int[][] intervals) {
-        if (intervals.length <= 1) return intervals;
+        int n = intervals.length;
+        if (n <= 1) return intervals;
 
         Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
-
-        List<int[]> deque= new ArrayList<>();
-        deque.add(intervals[0]);
-
-        for (int i = 1; i < intervals.length; i++){
-            int[] last = deque.get(deque.size() - 1);
-
-            if (intervals[i][0] > last[1]){
-                deque.add(intervals[i]);
+        List<int[]> list = new ArrayList<>();
+        int[] prev = intervals[0];
+        for (int i = 1; i < n; i++){
+            int[] cur = intervals[i];
+            if (cur[0] <= prev[1]){
+                prev[1] = Math.max(prev[1], cur[1]);
             }else {
-                last[1] = Math.max(last[1], intervals[i][1]);
+                list.add(prev);
+                prev = cur;
             }
         }
+        list.add(prev);
 
-
-        return deque.toArray(new int[deque.size()][]);
+        return list.toArray(new int[list.size()][]);
     }
 
     public static void main(String[] args) {
