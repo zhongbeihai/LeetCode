@@ -23,11 +23,11 @@ public class WordBreakII_140 {
         if (!can[0]) return new ArrayList<>();
 
         Map<Integer, List<String>> memo = new HashMap<>();
-
+        return dfs(0, memo, s, wordSet, minL, maxL, can);
     }
 
     public List<String> dfs(int start, Map<Integer, List<String>> memo, String s, Set<String> wordSet,int minL, int maxL, boolean[] can){
-        if (memo.containsKey(start)) return memo.get(i);
+        if (memo.containsKey(start)) return memo.get(start);
         int n = s.length();
         List<String> res = new ArrayList<>();
         if (start == n) {
