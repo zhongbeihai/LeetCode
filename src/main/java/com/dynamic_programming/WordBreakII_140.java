@@ -6,39 +6,31 @@ import java.util.List;
 import java.util.Set;
 
 public class WordBreakII_140 {
-
-    private HashSet<String> wordDict;
-    private List<String>[] memo;
+    HashSet<String> wordSet;
+    List<String>[] memo;
+    int[] dp;
     public List<String> wordBreak(String s, List<String> wordDict) {
-        this.wordDict = new HashSet<>(wordDict);
-        memo = new List[s.length()];
-        return dp(s, 0);
+        wordSet = new HashSet<>(wordDict);
+        int n = s.length();
+        memo = new List[n];
+
+        return new ArrayList<>();
     }
 
-    List<String> dp(String s, int start ){
-        List<String> res = new ArrayList<>();
-        if(start == s.length()){
-            res.add("");
-            return res;
+    public void backtrack(char[] ss, int idx, String sentence, StringBuilder tem){
+        if (idx == ss.length){
+            if (wordSet.contains(tem.toString())) ans.add(sentence + " " + tem);
+            return;
         }
 
-        if(memo[start] != null) return memo[start];
-
-        for(int i = 1; i + start<= s.length(); i++){
-            String prefix = s.substring(start, start + i);
-            if(wordDict.contains(prefix)){
-                List<String> subProblem = dp(s, start + i);
-                for (String sub: subProblem){
-                    if(sub.isEmpty()){
-                        res.add(prefix);
-                    }else {
-                        res.add(prefix + " " + sub);
-                    }
-                }
-            }
+        if (wordSet.contains(tem.toString())){
+            sentence = sentence + " " + tem.toString();
         }
 
-        memo[start] = res;
-        return res;
+        for (int i = idx; i < ss.length; i++) {
+            tem.append(ss[i]);
+
+
+        }
     }
 }
