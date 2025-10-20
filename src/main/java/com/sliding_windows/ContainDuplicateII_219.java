@@ -1,19 +1,20 @@
 package com.sliding_windows;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class ContainDuplicateII_219 {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
-        int left = 0;
-        HashSet<Integer> set = new HashSet<>();
+        HashMap<Integer, Integer> numToIdx = new HashMap<>();
 
+        boolean flag = false;
         for (int i = 0; i < nums.length; i++){
-            if (i - left >= k){
-                set.remove(nums[left]);
-                left++;
+            if (numToIdx.containsKey(nums[i])){
+                flag = i - numToIdx.get(nums[i]) <= k;
             }
-            if (set.contains(nums[i])) return true;
-            set.add(nums[i]);
+            if (flag) return flag;
+
+            numToIdx.put(nums[i], i);
         }
 
         return false;
