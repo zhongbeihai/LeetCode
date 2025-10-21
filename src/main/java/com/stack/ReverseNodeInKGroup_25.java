@@ -2,40 +2,42 @@ package com.stack;
 
 import structure.ListNode;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class ReverseNodeInKGroup_25 {
     public ListNode reverseKGroup(ListNode head, int k) {
         if (head == null || head.next == null) return head;
-        ListNode dummy = new ListNode(-1, head);
-        ListNode prev = dummy, cur = head;
+        Deque<ListNode> stack = new ArrayDeque<>();
 
-        Stack<ListNode> stack = new Stack<>();
-        while (cur != null){
-            int j = 0;
-            for (int i = 0; i < k && cur != null; i++){
-                stack.push(cur);
-                cur = cur.next;
-                j++;
-            }
-            if (j == k){
-                while(!stack.isEmpty()){
-                    prev.next = stack.pop();
-                    prev = prev.next;
-                }
-            }else {
-                List<ListNode> list = new ArrayList<>(stack);
-                for (ListNode listNode : list) {
-                    prev.next = listNode;
-                    prev = prev.next;
+        ListNode dummy = new ListNode(), worker = dummy;
+        while (head != null){
+            stack.push(head);
+            head = head.next;
+
+            if (stack.size() == k){
+                while (!stack.isEmpty()){
+                    worker.next = stack.pop();
+                    worker = worker.next;
                 }
             }
         }
+        while (!stack.isEmpty()){
+            worker.next = stack.pollLast();
+            worker = worker.next;
+        }
+        worker.next = null;
 
-        prev.next = null;
         return dummy.next;
+    }
+
+    public static void main(String[] args) {
+        ListNode dummy = new ListNode(), worker = dummy;
+        for (int i = 0; i < 5; i++) {
+            worker.next = new ListNode(i + 1);
+            worker = worker.next;
+        }
+
+        ReverseNodeInKGroup_25 r= new ReverseNodeInKGroup_25();
+        r.reverseKGroup(dummy.next, 3);
     }
 }
