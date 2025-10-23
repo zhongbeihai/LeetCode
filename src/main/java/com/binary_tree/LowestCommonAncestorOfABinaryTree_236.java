@@ -5,46 +5,49 @@ import structure.TreeNode;
 import sun.reflect.generics.tree.Tree;
 
 import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 
 public class LowestCommonAncestorOfABinaryTree_236 {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        Queue<TreeNode> queue = new ArrayDeque<>();
-        queue.add(root);
+        if (root == null) return null;
 
         if (isSpring(p, q)) return p;
         if (isSpring(q, p)) return q;
 
         return dfs(root, p, q);
+
     }
 
-    public TreeNode dfs(TreeNode root, TreeNode p, TreeNode q){
-        TreeNode r = null;
-        if(root.left != null){
-            r = dfs(root.left, p, q);
-            if (r != null) return  r;
-        }
-        if(root.right != null){
-            r = dfs(root.right, p, q);
-            if (r != null) return  r;
-        }
+    public boolean isSpring(TreeNode p, TreeNode s){
+        if (p == null) return false;
 
-        if(isSpring(root, p) && isSpring(root, q)){
-            r =  root;
-        }
+        if (p.val == s.val) return true;
+
+        boolean left = isSpring(p.left, s);
+        boolean right = isSpring(p.right, s);
+
+        return left | right;
+    }
+
+    public TreeNode dfs (TreeNode root, TreeNode p, TreeNode q){
+        if (root == null) return null;
+
+        TreeNode r = null;
+
+        r = dfs(root.left, p , q);
+        if (r != null) return r;
+
+        r = dfs(root.right, p, q);
+        if (r != null) return r;
+
+        if (isSpring(root, p) && isSpring(root, q)) r = root;
 
         return r;
     }
 
-    public boolean isSpring(TreeNode p , TreeNode q){
-        if(p == q) return true;
 
-        boolean b1 = false, b2 = false;
-        if(p.left != null)  b1 = isSpring(p.left, q);
-        if(p.right != null) b2 = isSpring(p.right, q);
-
-        return b1 | b2;
-    }
 
     public static void main(String[] args) {
         LowestCommonAncestorOfABinaryTree_236 l = new LowestCommonAncestorOfABinaryTree_236();
