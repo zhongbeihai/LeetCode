@@ -13,10 +13,36 @@ public class LowestCommonAncestorOfABinaryTree_236 {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null) return null;
 
-        return null;
+        if (isSpring(p, q)) return p;
+        if (isSpring(q, p)) return q;
 
+        return dfs(root, p, q);
     }
 
+    public boolean isSpring(TreeNode parent, TreeNode child){
+        if (parent == null) return false;
+
+        boolean left = isSpring(parent.left, child);
+        boolean right = isSpring(parent.right, child);
+
+        if (parent.val == child.val) return true;
+
+        return left | right;
+    }
+
+    public TreeNode dfs(TreeNode root, TreeNode p, TreeNode q){
+        if (root == null) return null;
+
+        TreeNode r = null;
+        r = dfs(root.left, p, q);
+        if (r != null) return r;
+        r = dfs(root.right, p, q);
+        if (r != null) return r;
+
+        if (isSpring(root, p) && isSpring(root, q)) r = root;
+
+        return r;
+    }
 
 
 
