@@ -7,33 +7,37 @@ import java.util.Queue;
 
 public class CourseSchedule_207 {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        if (numCourses == 1) return true;
+
         List<Integer>[] graph = new List[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            graph[i] = new ArrayList<>();
-        }
-        // build graph and count in-degree
-        int[] inDre =new int[numCourses];
+        int[] ing = new int[numCourses];
         for (int[] pre: prerequisites){
-            inDre[pre[1]]++;
+            if (graph[pre[0]] == null) graph[pre[0]] = new ArrayList<>();
             graph[pre[0]].add(pre[1]);
+            ing[pre[1]]++;
         }
 
-        // bfs
-        int count = 0;
+        int n = numCourses;
         Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < numCourses; i++) {
-            if (inDre[i] == 0) queue.add(i);
+            if (ing[i] == 0) {queue.add(i); n--;}
         }
+
         while (!queue.isEmpty()){
-            count++;
-            int from = queue.poll();
-            List<Integer> to = graph[from];
-            for (int t: to){
-                inDre[t]--; // meet all the prerequisites
-                if (inDre[t] == 0) queue.add(t);
+            int cur = queue.poll();
+            List<Integer> nexts = graph[cur];
+            if (nexts == null) continue;
+
+            for (int next: nexts){
+                ing[next]--;
+                if (ing[next] == 0) {
+                    queue.add(next);
+                    n--;
+                }
             }
         }
 
-        return count == numCourses;
+        return n == 0;
+
     }
 }
