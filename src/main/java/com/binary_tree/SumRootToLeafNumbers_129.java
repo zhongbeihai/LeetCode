@@ -10,15 +10,15 @@ public class SumRootToLeafNumbers_129 {
         return sum;
     }
 
-    public void dfs(TreeNode root, StringBuilder sb){
-        sb.append(root.val);
+    public void dfs(TreeNode root, StringBuilder cur){
+        cur.append(root.val);
         if (root.left == null && root.right == null){
-            sum += Integer.parseInt(sb.toString());
+            sum += Integer.parseInt(cur.toString());
             return;
         }
 
-        if (root.left != null) dfs(root.left, new StringBuilder(sb));
-        if (root.right != null) dfs(root.right, new StringBuilder(sb));
+        if (root.left != null) dfs(root.left, new StringBuilder(cur));
+        if (root.right != null) dfs(root.right, new StringBuilder(cur));
     }
 
     public static void main(String[] args) {
