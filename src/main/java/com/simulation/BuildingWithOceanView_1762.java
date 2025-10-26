@@ -7,23 +7,21 @@ public class BuildingWithOceanView_1762 {
         int n = heights.length;
         List<Integer> res = new ArrayList<>();
 
-        int rightTallest = n - 1;
-        res.add(rightTallest);
-        for (int i = n - 2; i >= 0; i--){
-            if (heights[i] > heights[rightTallest]){
-                res.add(i);
-                rightTallest = i;
+        int right = n, left = n - 1;
+        while ((left >= 0 && left < right)){
+            if (right == n || heights[left] > heights[right]) {
+                res.add(left);
+                right = left;
             }
+            left--;
         }
-
         Collections.reverse(res);
-        int[] ans = new int[res.size()];
+        int[] r = new int[res.size()];
         for (int i = 0; i < res.size(); i++) {
-            ans[i] = res.get(i);
+            r[i] = res.get(i);
         }
-        return ans;
-        //return  res.stream().mapToInt(Integer::intValue).toArray();
 
+        return r;
     }
 
     public static void main(String[] args) {
