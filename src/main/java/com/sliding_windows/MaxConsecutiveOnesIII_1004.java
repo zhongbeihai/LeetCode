@@ -5,27 +5,17 @@ import java.util.Queue;
 
 public class MaxConsecutiveOnesIII_1004 {
     public int longestOnes(int[] nums, int k) {
-        int count = 0;
-        int p1 = 0;
-        int res = 0;
-        Queue<Integer> zeros = new ArrayDeque<>();
-        for (int i = 0; i < nums.length; i++){
-            if (nums[i] == 1) count++;
-            else {
-                zeros.add(i);
-                if (k > 0) {
-                    count++;
-                    k--;
-                }else {
-                    int lastZeros = zeros.poll();
-                    count -= lastZeros - p1;
-                    p1 = lastZeros + 1;
-                }
+        int n = nums.length, countZero = 0, res = 0, left = 0;
+        for (int right = 0; right < n; right++){
+            if (nums[right] == 0) countZero++;
+            while (countZero > k){
+                if (nums[left] == 0) countZero--;
+                left++;
             }
-            res = Math.max(count, res);
+            res = Math.max(res, right - left + 1);
         }
 
-        return count;
+        return res;
     }
 
     public static void main(String[] args) {
