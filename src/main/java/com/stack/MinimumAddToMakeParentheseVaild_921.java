@@ -4,17 +4,14 @@ import java.util.Stack;
 
 public class MinimumAddToMakeParentheseVaild_921 {
     public int minAddToMakeValid(String s) {
-        Stack<Character> stack = new Stack<Character>();
-        for(int i = 0; i < s.length(); i++){
-            if(stack.isEmpty()){
-                stack.push(s.charAt(i));
-                continue;
+        Stack<Character> stack = new Stack<>();
+        char[] ss = s.toCharArray();
+        for (char c: ss){
+            if (stack.isEmpty() || c == '(') {stack.push(c); continue;}
+            if (c == ')'){
+                if (stack.peek() == '(') stack.pop();
+                else stack.push(c);
             }
-            if(s.charAt(i) == ')' && stack.peek() == '('){
-                stack.pop();
-                continue;
-            }
-            stack.push(s.charAt(i));
         }
 
         return stack.size();
