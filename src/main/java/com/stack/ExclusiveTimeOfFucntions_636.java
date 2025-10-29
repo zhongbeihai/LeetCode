@@ -5,27 +5,21 @@ import java.util.*;
 public class ExclusiveTimeOfFucntions_636 {
     public int[] exclusiveTime(int n, List<String> logs) {
         int[] res = new int[n];
+        Stack<Integer> stack = new Stack<>();
         int prevTime = 0;
-        Deque<Integer> stack = new ArrayDeque<>();
-
         for (String log: logs){
-            String[] ss = log.split(":");
-            int id = Integer.parseInt(ss[0]), curTime = Integer.parseInt(ss[1]);
-            boolean isStart = ss[1].charAt(0) == 's';
-
-            if (isStart){
-                if (stack.isEmpty()) {
-                    stack.push(id);
-                    prevTime = curTime;
-                    continue;
+            String[] l = log.split(":");
+            int id = Integer.parseInt(l[0]), time = Integer.parseInt(l[2]);
+            if (l[1].equals("start")) {
+                if (!stack.isEmpty()){
+                    res[stack.peek()] += time - prevTime;
                 }
-                res[stack.peek()] += curTime - prevTime;
-                prevTime = curTime;
                 stack.push(id);
+                prevTime = time;
             }else {
-                res[id] += curTime - prevTime + 1;
-                prevTime = curTime + 1;
-
+                stack.pop();
+                res[id] += time - prevTime + 1;
+                prevTime = time + 1;
             }
         }
 

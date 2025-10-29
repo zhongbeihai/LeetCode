@@ -1,33 +1,23 @@
 package com.two_pointers;
 
-import java.util.Map;
+import java.util.*;
 
 public class MinimumWindowSubstring_76 {
     public String minWindow(String s, String t) {
-        if (s.length() < t.length()) return "";
+        char[] ss = s.toCharArray();
+        char[] tt = t.toCharArray();
+        int needCnt = tt.length;
+        int[] needFre = new int[120];
+        Set<Character> set = new HashSet<>();
+        for(char c: tt) {needFre[c]++; set.add(c);}
 
-        char[] ss = s.toCharArray(), tt = t.toCharArray();
-        int missing = tt.length, left = 0, bestLeft = 0, bestLen = Integer.MAX_VALUE;
-        int[] need = new int[128];
-        for (char c: tt) need[c]++;
 
+        int left = 0, len = Integer.MAX_VALUE, l = -1, r = -1;
         for (int right = 0; right < ss.length; right++){
-            if (need[ss[right]] > 0) missing--;
-            need[ss[right]]--;
 
-            while (missing == 0 && left <= right){
-                if (right - left + 1 < bestLen) {
-                    bestLen = right - left + 1;
-                    bestLeft = left;
-                }
-
-                if (need[ss[left]] == 0) missing++;
-                need[ss[left]]++;
-                left++;
-            }
         }
 
-        return bestLen == Integer.MAX_VALUE ? "" : s.substring(bestLeft, bestLeft + bestLen);
+        return l == -1 ? "" : s.substring(l, r + 1);
     }
 
     public boolean include(Map<Character, Integer> s, Map<Character, Integer> t){
@@ -39,7 +29,7 @@ public class MinimumWindowSubstring_76 {
 
     public static void main(String[] args) {
         MinimumWindowSubstring_76 m = new MinimumWindowSubstring_76();
-        // m.minWindow("ADOBECODEBANC", "ABC");
-        m.minWindow("a", "aa");
+        m.minWindow("ADBECEBANC", "ABC");
+        // m.minWindow("a", "aa");
     }
 }
