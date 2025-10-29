@@ -6,21 +6,20 @@ import java.util.List;
 
 public class RemoveNthNodeFromEndOfList_19 {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode fast = new ListNode(-1, head);
-        ListNode slow = new ListNode(-1, head);
-        while (n > 0){
-            if (fast == null) return head;
-            fast = fast.next;
-            n--;
+        ListNode dummy = new ListNode(-1, head), worker = head;
+        int total = 0;
+        while (worker != null){
+            total++;
+            worker = worker.next;
         }
-        while (fast.next != null){
-            slow = slow.next;
-            fast = fast.next;
+        int go = total - n;
+        worker = dummy;
+        while (go > 0){
+            worker = worker.next;
+            go--;
         }
+        worker.next = worker.next.next;
 
-        if (fast == head) return null;
-        if (slow.next == head) return slow.next.next;
-        slow.next = fast;
-        return head;
+        return dummy.next;
     }
 }
