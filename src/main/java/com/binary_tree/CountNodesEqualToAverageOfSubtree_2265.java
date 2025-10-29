@@ -5,24 +5,25 @@ import structure.TreeNode;
 public class CountNodesEqualToAverageOfSubtree_2265 {
     private int res = 0;
     public int averageOfSubtree(TreeNode root) {
-        helper(root);
+        dfs(root);
 
         return res;
     }
 
-    public int[] helper(TreeNode root){
-        if (root == null) return new int[]{0, 0}; // {sum, cnt}
+    public int[] dfs(TreeNode root){
 
-        int[] leftSum = helper(root.left);
-        int[] rightSum = helper(root.right);
+        int[] left = new int[]{0, 0};
+        int[] right = new int[]{0, 0};
 
-        int sum = leftSum[0] + rightSum[0] + root.val;
-        int cnt = leftSum[1] + rightSum[1] + 1;
+        if (root.left != null) left = dfs(root.left);
+        if (root.right != null) right = dfs(root.right);
 
-        if (sum / cnt == root.val) res++;
+        if ((left[0] + right[0] + root.val) / (left[1] + right[1] + 1) == root.val) res++;
 
-        return new int[]{sum, cnt};
+        return new int[]{left[0] + right[0] + root.val, left[1] + right[1] + 1};
     }
+
+
 
     public static void main(String[] args) {
         CountNodesEqualToAverageOfSubtree_2265 c = new CountNodesEqualToAverageOfSubtree_2265();
