@@ -11,25 +11,30 @@ import java.util.Stack;
  */
 public class LongestValidParentheses_32 {
     public int longestValidParentheses(String s) {
-        Stack<Integer> stack = new Stack<>();
-        char[] ss = s.toCharArray();
+        if (s.isEmpty()) return 0;
 
-        // initialize the stack
-        // **the top the stack is the first **index** of invalid element**
-        stack.push(-1);
-        int max = 0;
-        for (int i = 0; i < ss.length; i++){
-            if(ss[i] == '(' || stack.peek() == -1) stack.push(i);
-            if(ss[i] == ')'){
-                if(ss[stack.peek()] == '('){
+        Stack<Character> stack = new Stack<>();
+        char[] ss = s.toCharArray();
+        int res = 0, len = 0;
+        for (char c: ss){
+            if (stack.isEmpty() || c == '(') {
+                stack.push(c);
+            } else if (c == ')') {
+                if (stack.peek() == '('){
                     stack.pop();
-                    max = Math.max(max, i - stack.peek());
+                    len += 2;
+                    res = Math.max(res, len);
                 }else {
-                    stack.push(i);
+                    len = 0;
                 }
             }
         }
 
-        return max;
+        return res;
+    }
+
+    public static void main(String[] args) {
+        LongestValidParentheses_32 l = new LongestValidParentheses_32();
+        l.longestValidParentheses("()(()");
     }
 }
