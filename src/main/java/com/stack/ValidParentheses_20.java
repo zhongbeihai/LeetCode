@@ -8,31 +8,29 @@ public class ValidParentheses_20 {
     public boolean isValid(String s) {
         char[] ss = s.toCharArray();
         Stack<Character> stack = new Stack<>();
-        if(s.length() % 2 != 0) return false;
-        for(char p: ss){
-            if(p == '{' || p == '(' || p == '[' || stack.size() == 0){
-                stack.push(p);
-            } else if (p == '}') {
-                if (stack.peek() == '{') {
-                    stack.pop();
-                }else {
-                    stack.push(p);
-                }
-            } else if (p == ']') {
-                if (stack.peek() == '[') {
-                    stack.pop();
-                }else {
-                    stack.push(p);
-                }
-            } else if (p == ')') {
-                if (stack.peek() == '(') {
-                    stack.pop();
-                }else {
-                    stack.push(p);
-                }
+        for (char c: ss){
+            if (stack.isEmpty() || c == '(' || c == '{' || c == '[') {
+                stack.push(c);
+                continue;
+            }
+            if (c == ')'){
+                char top = stack.peek();
+                if (top == '(') stack.pop();
+                else if (top == '{' || top == '[') return false;
+                else stack.push(c);
+            } else if (c == '}') {
+                char top = stack.peek();
+                if (top == '{') stack.pop();
+                else if (top == '(' || top == '[') return false;
+                else stack.push(c);
+            } else if (c == ']') {
+                char top = stack.peek();
+                if (top == '[') stack.pop();
+                else if (top == '{' || top == '(') return false;
+                else stack.push(c);
             }
         }
 
-        return stack.size() == 0;
+        return stack.isEmpty();
     }
 }
