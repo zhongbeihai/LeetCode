@@ -13,16 +13,15 @@ import java.util.Stack;
 public class LongestValidParentheses_32 {
     public int longestValidParentheses(String s) {
         Stack<Integer> stack = new Stack<>();
+        stack.push(0);
         int res = 0;
-        for (int i = 0; i < s.length(); i++){
-            if (stack.isEmpty() || s.charAt(i) == '(') stack.push(i);
+        for (int i = 0; i < s.length(); i++) {
+            if (stack.peek() == -1 || s.charAt(i) == '(') stack.push(i);
             else {
                 if (s.charAt(stack.peek()) == '('){
                     stack.pop();
                     res = Math.max(res, i - stack.peek());
-                }else {
-                    stack.push(i);
-                }
+                }else stack.push(i);
             }
         }
 
