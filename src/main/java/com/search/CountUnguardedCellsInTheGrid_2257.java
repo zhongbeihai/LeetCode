@@ -4,43 +4,67 @@ public class CountUnguardedCellsInTheGrid_2257 {
     int[][] space;
     public int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
         space = new int[m][n];
-        for(int[] wall: walls){
-            space[wall[0]][wall[1]] = 2;
-        }
-        for(int[] guard: guards){
-            space[guard[0]][guard[1]] = 2;
+        for (int[] wall: walls) space[wall[0]][wall[1]] = 1;
+        for (int[] guard: guards) space[guard[0]][guard[1]] = 1;
+
+        for (int[] guard: guards){
+            int x = guard[0], y = guard[1];
+            goUp(x - 1, y);
+            goDown(m, x + 1, y);
+            goLeft(x, y - 1);
+            goRight(n, x, y + 1);
         }
 
-        int[][] directions = new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
-        for(int[] guard: guards){
-            for(int[] dir: directions){
-
-                dfs(guard[0], guard[1], dir);
+        int res = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (space[i][j] == 0) {
+                    res++;
+                    space[i][j] = 1;
+                }
             }
         }
 
-        int count = 0;
-        for(int[] ss: space){
-            for(int s: ss ){
-                if (s == 0) count++;
-            }
-        }
-
-        return count;
+        return res;
     }
 
-    public void dfs(int startX, int startY, int[] direct){
-
-        startX = startX + direct[0];
-        startY = startY + direct[1];
-        if(startX < space.length && startY < space[0].length && startX >= 0 && startY >= 0
-        && space[startX][startY] != 2){
-            space[startX][startY] = 1;
-            dfs(startX, startY, direct);
+    public void goUp( int x, int y){
+        while (x >= 0){
+            if (space[x][y] == 0) {
+                space[x][y] = 1;
+                x--;
+            }else return;
         }
-
-        return;
     }
+
+    public void goDown(int m, int x, int y){
+        while (x < m){
+            if (space[x][y] == 0) {
+                space[x][y] = 1;
+                x++;
+            }else return;
+        }
+    }
+
+    public void goLeft(int x, int y){
+        while (y >= 0){
+            if (space[x][y] == 0) {
+                space[x][y] = 1;
+                y--;
+            }else return;
+        }
+    }
+
+    public void goRight(int n, int x, int y){
+        while (y < n){
+            if (space[x][y] == 0) {
+                space[x][y] = 1;
+                y++;
+            }else return;
+        }
+    }
+
+
 
     public static void main(String[] args) {
         CountUnguardedCellsInTheGrid_2257 c = new CountUnguardedCellsInTheGrid_2257();

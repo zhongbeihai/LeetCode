@@ -4,20 +4,21 @@ import structure.Node;
 
 public class InsertIntoSortedCircularLinkedList_708 {
     public Node insert(Node head, int insertVal) {
-        if (head == null){
-            Node x = new Node(insertVal);
-            x.next = x;
-            return x;
+        if(head == null) {
+            head = new Node(insertVal);
+            head.next = head;
+            return head;
         }
         Node cur = head;
         while (true){
-            if (cur.val <= insertVal && insertVal <= cur.next.val) break;
+            if (cur.val <= insertVal && cur.next.val >= insertVal) break;
             if (cur.val > cur.next.val && (insertVal >= cur.val || insertVal <= cur.next.val)) break;
+
             cur = cur.next;
             if (cur == head) break;
         }
-        Node x = new Node(insertVal, cur.next);
-        cur.next = x;
+
+        cur.next = new Node(insertVal, cur.next);
 
         return head;
     }
