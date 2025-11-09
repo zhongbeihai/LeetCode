@@ -1,24 +1,26 @@
 package com.two_pointers;
 
+import java.util.Arrays;
+
 public class MaximumSwap_670 {
     public int maximumSwap(int num) {
         char[] nums = String.valueOf(num).toCharArray();
 
         for (int i = 0; i < nums.length; i++){
-            int p = i;
-            for (int j = nums.length - 1; j > i; j--){
-                if (nums[j] - '0' > nums[p]  -'0') p = j;
+            int p = nums.length - 1, biggestIdx = i;
+            while (p > i){
+                if (nums[p] > nums[biggestIdx]) biggestIdx = p;
+                p--;
             }
-            if (p != i){
+            if (biggestIdx != i){
                 char tem = nums[i];
-                nums[i] = nums[p];
-                nums[p] = tem;
-
-                return Integer.parseInt(String.valueOf(nums));
+                nums[i] = nums[biggestIdx];
+                nums[biggestIdx] = tem;
+                break;
             }
         }
 
-        return num;
+        return Integer.parseInt(String.valueOf(nums));
     }
 
     public static void main(String[] args) {
