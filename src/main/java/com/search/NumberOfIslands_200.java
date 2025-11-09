@@ -2,13 +2,14 @@ package com.search;
 
 public class NumberOfIslands_200 {
     public int count = 0;
-    public int[][] visited;
+    private final int[][] dirs = new int[][]{{0,1}, {1, 0},{0, -1}, {-1, 0}};
     public int numIslands(char[][] grid) {
-        int n = grid.length, m = grid[0].length;
-        visited = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (grid[i][j] == '1' && visited[i][j] == 0){
+        if (grid.length == 0) return 0;
+        int m = grid.length, n = grid[0].length;
+
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1'){
                     count++;
                     dfs(grid, i, j);
                 }
@@ -19,12 +20,12 @@ public class NumberOfIslands_200 {
     }
 
     public void dfs(char[][] grid, int x, int y){
-        visited[x][y] = 1;
-        int n = grid.length, m = grid[0].length;
-        int[][] dirs = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+        int m = grid.length, n = grid[0].length;
+        grid[x][y] = '0';
+
         for (int[] dir: dirs){
             int nx = x + dir[0], ny = y + dir[1];
-            if (nx >= 0 && nx < n && ny >= 0 && ny < m && grid[nx][ny] == '1' && visited[nx][ny] == 0) dfs(grid, nx, ny);
+            if (nx >= 0 && nx < m && ny >= 0 && ny < n && grid[nx][ny] == '1') dfs(grid, nx, ny);
         }
     }
 
