@@ -6,19 +6,17 @@ public class SumClosest_16 {
     public int threeSumClosest(int[] nums, int target) {
         Arrays.sort(nums);
 
-        int sum = 0;
-        int gap = Integer.MAX_VALUE;
-        for(int i = 0; i < nums.length; i++){
+        int minDiff = Integer.MAX_VALUE, minSum = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++){
             int left = i + 1, right = nums.length - 1;
             while (left < right){
-                int curSum = nums[i] + nums[left] + nums[right];
-                if(curSum == target) return curSum;
-                int curGap = Math.abs(curSum - target);
-                if(curGap < gap) {
-                    gap = curGap;
-                    sum = curSum;
+                int sum = nums[left] + nums[right] + nums[i];
+                if (Math.abs(sum - target) < minDiff){
+                    minSum = sum;
+                    minDiff = Math.abs(sum - target);
                 }
-                if(curSum > target){
+                if (sum == target) return sum;
+                else if (sum > target){
                     right--;
                 }else {
                     left++;
@@ -26,7 +24,7 @@ public class SumClosest_16 {
             }
         }
 
-        return sum;
+        return minSum;
     }
 
     public static void main(String[] args) {
