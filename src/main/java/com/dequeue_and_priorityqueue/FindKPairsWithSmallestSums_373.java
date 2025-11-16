@@ -6,36 +6,21 @@ public class FindKPairsWithSmallestSums_373 {
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
         if (nums1.length == 0 || nums2.length == 0 || k == 0) return new ArrayList<>();
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(i -> i[0]));
-        int[] n = new int[]{nums1[0] + nums2[0], 0, 0};
-        pq.add(n);
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(i -> i[0])); // int[sum, x, y]
+        for (int i = 0; i < Math.min(k, nums1.length); i++){
+            pq.add(new int[]{nums1[i] + nums2[0], i, 0});
+        }
 
-        List<List<Integer>> res = new ArrayList<>();
-        Set<String> visited = new HashSet<>();
-        visited.add("0#0");
-
-        while (!pq.isEmpty() && res.size() < k) {
+        List<List<Integer>> res = new ArrayList<>(k);
+        while (k > 0 && !pq.isEmpty()){
             int[] cur = pq.poll();
-            List<Integer> tem = Arrays.asList(nums1[cur[1]], nums2[cur[2]]);
-            res.add(new ArrayList<>(tem));
-
-            if (cur[1] + 1 < nums1.length) {
-                int i = cur[1] + 1, j = cur[2];
-                String key = i + "#" + j;
-                if (visited.add(key)) {
-                    int[] n1 = new int[]{nums1[i] + nums2[j], i, j};
-                    pq.add(n1);
-                }
-            }
-
-            if (cur[2] + 1 < nums2.length) {
-                int i = cur[1], j = cur[2] + 1;
-                String key = i + "#" + j;
-                if (visited.add(key)) {
-                    int[] n2 = new int[]{nums1[i] + nums2[j], i, j};
-                    pq.add(n2);
-                }
-            }
+            int x = cur[1], y = cur[2], n1 = nums1[x], n2 = nums2[y];
+            List<Integer> pair = new ArrayList<>(2);
+            pair.add(n1);
+            pair.add(n2);
+            res.add(pair);
+            if (y + 1 < nums2.length) pq.add(new int[]{nums1[x] + nums2[y + 1], x, y + 1});
+            k--;
         }
 
         return res;
