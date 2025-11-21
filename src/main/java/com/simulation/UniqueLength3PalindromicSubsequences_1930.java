@@ -4,24 +4,32 @@ import java.util.HashSet;
 
 public class UniqueLength3PalindromicSubsequences_1930 {
     public int countPalindromicSubsequence(String s) {
-        int[] toRight = new int[26];
-        for(char c: s.toCharArray()){
-            toRight[c - 'a']++;
+        int n = s.length();
+        char[] ss = s.toCharArray();
+        int[] mostRight = new int[26];
+        for (int i = n - 1; i >= 0 ; i--) {
+            if (mostRight[ss[i] - 'a'] == 0) mostRight[ss[i] - 'a'] = i;
         }
 
-        int[] toLeft = new int[26];
-        HashSet<Integer> set = new HashSet<>();
-        for(int i = 0; i < s.length(); i++){
-            int cur = s.charAt(i) - 'a';
-            toRight[cur]--;
-            for(int j = 0; j < 26; j++){
-                if(toRight[j] > 0 && toLeft[j] > 0){
-                    set.add(26 * cur + j);
+        HashSet<Character> visited = new HashSet<>();
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            if (!visited.contains(ss[i]) && mostRight[ss[i] - 'a'] > i){
+                HashSet<Character> cont = new HashSet<>();
+                int right = mostRight[ss[i] - 'a'];
+                for (int j = i + 1; j < right; j++) {
+                    cont.add(ss[j]);
                 }
+                res += cont.size();
             }
-            toLeft[cur]++;
+            visited.add(ss[i]);
         }
 
-        return set.size();
+        return res;
+    }
+
+    public static void main(String[] args) {
+        UniqueLength3PalindromicSubsequences_1930 u = new UniqueLength3PalindromicSubsequences_1930();
+        u.countPalindromicSubsequence("aabca");
     }
 }
