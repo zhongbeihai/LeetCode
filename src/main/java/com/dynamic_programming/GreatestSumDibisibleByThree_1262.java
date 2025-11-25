@@ -5,21 +5,20 @@ public class GreatestSumDibisibleByThree_1262 {
         int n = nums.length;
         if (n == 0) return 0;
 
-        int[] dp = new int[3];
-        dp[1] = dp[2] = -1;
+        int[][] dp = new int[n + 1][3];
 
-        for (int x: nums){
-            int[] next = dp.clone();
-            int mod = x % 3;
-            for (int r = 0; r < 3; r++) {
-                if (dp[r] == -1) continue; // 不可达状态跳过
-                int nr = (r + mod) % 3;
-                next[nr] = Math.max(next[nr], dp[r] + x);
+        for (int i = 1; i <= n; i++){
+            int x = nums[i - 1];
+            for (int j = 0; j < 3; j++) {
+                // don't choose x
+                dp[i][j] = Math.max(dp[i][j], dp[i - 1][j]);
+                // choose x
+                int nr = (dp[i - 1][j] + x) % 3;
+                dp[i][nr] = Math.max(dp[i][nr], dp[i - 1][j] + x);
             }
-            dp = next;
         }
 
-        return dp[0];
+        return dp[n][0];
     }
 
     public static void main(String[] args) {
