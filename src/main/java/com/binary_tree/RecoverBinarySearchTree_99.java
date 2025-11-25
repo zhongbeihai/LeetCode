@@ -5,8 +5,9 @@ import structure.TreeNode;
 public class RecoverBinarySearchTree_99 {
     TreeNode first, second, prev;
     public void recoverTree(TreeNode root) {
-        midorderDfs(root);
+        if (root == null) return;
 
+        midorderDfs(root);
         int tem = first.val;
         first.val = second.val;
         second.val = tem;
@@ -16,8 +17,7 @@ public class RecoverBinarySearchTree_99 {
         if (cur == null) return;
 
         midorderDfs(cur.left);
-
-        if (prev != null && cur.val < prev.val){
+        if (prev != null && prev.val > cur.val){
             if (first == null) first = prev;
             second = cur;
         }
