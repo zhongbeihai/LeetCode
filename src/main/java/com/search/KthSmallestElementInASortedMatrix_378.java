@@ -1,6 +1,5 @@
 package com.search;
 
-import javafx.util.Pair;
 
 public class KthSmallestElementInASortedMatrix_378 {
     public int kthSmallest(int[][] matrix, int k) {

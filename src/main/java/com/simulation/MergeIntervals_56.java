@@ -1,7 +1,6 @@
 package com.simulation;
 
-import com.sun.scenario.effect.Merge;
-import javafx.util.Pair;
+import structure.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;

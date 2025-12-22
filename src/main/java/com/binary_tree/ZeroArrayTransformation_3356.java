@@ -1,6 +1,6 @@
 package com.binary_tree;
 
-import javafx.util.Pair;
+import structure.Pair;
 
 import javax.swing.*;
 import java.util.Arrays;

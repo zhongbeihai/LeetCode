@@ -1,6 +1,5 @@
 package com.simulation;
 
-import javafx.beans.binding.StringBinding;
 
 public class FindTheKCharacterInTheStringGameII_3307 {
     public char kthCharacter(long k, int[] operations) {

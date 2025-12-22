@@ -1,8 +1,6 @@
 package com.binary_tree;
 
-import javafx.util.Pair;
 import structure.TreeNode;
-import sun.reflect.generics.tree.Tree;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;

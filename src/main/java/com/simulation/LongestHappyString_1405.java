@@ -1,6 +1,6 @@
 package com.simulation;
 
-import javafx.util.Pair;
+import structure.Pair;
 
 import javax.print.DocFlavor;
 import java.util.Comparator;

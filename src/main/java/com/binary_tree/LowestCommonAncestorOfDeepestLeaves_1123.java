@@ -1,6 +1,5 @@
 package com.binary_tree;
 
-import javafx.util.Pair;
 import structure.TreeNode;
 
 import java.util.ArrayDeque;

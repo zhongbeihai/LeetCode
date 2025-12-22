@@ -1,6 +1,6 @@
 package com.prefixsum;
 
-import javafx.util.Pair;
+import structure.Pair;
 
 import java.util.Arrays;
 import java.util.HashMap;

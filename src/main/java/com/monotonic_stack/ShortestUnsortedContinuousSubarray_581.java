@@ -1,6 +1,5 @@
 package com.monotonic_stack;
 
-import com.sun.javafx.css.PseudoClassState;
 
 import java.util.Stack;
 
