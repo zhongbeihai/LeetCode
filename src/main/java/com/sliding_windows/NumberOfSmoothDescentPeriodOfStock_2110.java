@@ -14,6 +14,7 @@ public class NumberOfSmoothDescentPeriodOfStock_2110 {
             }
         }
 
+
         return res;
     }
 
