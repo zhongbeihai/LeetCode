@@ -9,17 +9,18 @@ public class MinStack {
     Stack<Integer> stack = new Stack<>();
     Stack<Integer> minStack = new Stack<>();
     public MinStack() {
-        minStack.push(Integer.MAX_VALUE - 1);
+
     }
 
     public void push(int val) {
         stack.push(val);
-        minStack.push(minStack.isEmpty() ? val : Math.min(minStack.peek(), val));
+        if (minStack.isEmpty() || minStack.peek() > val) minStack.push(val);
+        else minStack.push(minStack.peek());
     }
 
     public void pop() {
-        minStack.pop();
         stack.pop();
+        minStack.pop();
     }
 
     public int top() {
