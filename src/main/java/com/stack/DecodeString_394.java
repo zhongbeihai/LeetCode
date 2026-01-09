@@ -8,32 +8,35 @@ import java.util.Stack;
 
 public class DecodeString_394 {
     public String decodeString(String s) {
-        Stack<Integer> numStack = new Stack<>();
-        Stack<StringBuilder> stringStack = new Stack<>();
+        Deque<Integer> numStack = new ArrayDeque<>();
+        Deque<StringBuilder> strStack = new ArrayDeque<>();
 
+        StringBuilder curBuilder = new StringBuilder();
+        char[] ss = s.toCharArray();
         int num = 0;
-        StringBuilder cur = new StringBuilder();
-        for (char c: s.toCharArray()){
+        for (char c: ss){
             if (Character.isDigit(c)){
                 num = num * 10 + c - '0';
             } else if (c == '[') {
+                strStack.push(curBuilder);
+                curBuilder = new StringBuilder();
                 numStack.push(num);
-                stringStack.push(cur);
-                cur = new StringBuilder();
                 num = 0;
+            } else if (Character.isLetter(c)) {
+                curBuilder.append(c);
             } else if (c == ']') {
-                StringBuilder prev = stringStack.pop();
-                int times = numStack.pop();
-                for (int i = 0; i < times; i++){
-                    prev.append(cur);
+                int rep = numStack.pop();
+                String base = curBuilder.toString();
+                for (int i = 0; i < rep - 1; i++) {
+                    curBuilder.append(base);
                 }
-                cur = prev;
-            }else {
-                cur.append(c);
+                String curs = curBuilder.toString();
+                curBuilder = strStack.pop();
+                curBuilder.append(curs);
             }
         }
 
-        return stringStack.pop().toString();
+        return curBuilder.toString();
     }
 
     public static void main(String[] args) {
