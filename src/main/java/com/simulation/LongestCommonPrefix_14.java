@@ -2,12 +2,12 @@ package com.simulation;
 
 public class LongestCommonPrefix_14 {
     public String longestCommonPrefix(String[] strs) {
-        if (strs == null) return "";
+        if (strs.length == 0) return "";
 
         String prefix = strs[0];
-        for (int i = 1; i < strs.length; i++){
+        for (String str: strs){
             int p = 0;
-            while (p < prefix.length() && p < strs[i].length() && prefix.charAt(p) == strs[i].charAt(p)) p++;
+            while (p < prefix.length() && p < str.length() && prefix.charAt(p) == str.charAt(p)) p++;
             prefix = prefix.substring(0, p);
         }
 
