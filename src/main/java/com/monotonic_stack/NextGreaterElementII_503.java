@@ -1,6 +1,8 @@
 package com.monotonic_stack;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -11,17 +13,20 @@ import java.util.Stack;
  */
 public class NextGreaterElementII_503 {
     public int[] nextGreaterElements(int[] nums) {
-        int[] res = new int[nums.length];
-        Stack<Integer> stack = new Stack<>();
+        int n = nums.length;
+        Deque<Integer> stack = new ArrayDeque<>();
+
+        int[] res = new int[n];
         Arrays.fill(res, -1);
 
-        for(int i = 0; i < 2 * nums.length; i++){
-            int num = nums[ i % nums.length];
-            while (!stack.isEmpty() && num > nums[stack.peek()]){
-                res[stack.peek()] = num;
-                stack.pop();
+        for (int i = 0; i < 2 * n; i++) {
+            int idx = i % n;
+            while (!stack.isEmpty() && nums[idx] > nums[stack.peek()]) {
+                res[stack.pop()] = nums[idx];
             }
-            if(i < nums.length) stack.push(i);
+
+
+            if (i < n) stack.push(i);
         }
 
         return res;
