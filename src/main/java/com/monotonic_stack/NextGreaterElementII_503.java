@@ -14,17 +14,15 @@ import java.util.Stack;
 public class NextGreaterElementII_503 {
     public int[] nextGreaterElements(int[] nums) {
         int n = nums.length;
-        Deque<Integer> stack = new ArrayDeque<>();
-
         int[] res = new int[n];
         Arrays.fill(res, -1);
+        Deque<Integer> stack = new ArrayDeque<>();
 
-        for (int i = 0; i < 2 * n; i++) {
+        for (int i = 0; i < n * 2; i++) {
             int idx = i % n;
             while (!stack.isEmpty() && nums[idx] > nums[stack.peek()]) {
                 res[stack.pop()] = nums[idx];
             }
-
 
             if (i < n) stack.push(i);
         }
