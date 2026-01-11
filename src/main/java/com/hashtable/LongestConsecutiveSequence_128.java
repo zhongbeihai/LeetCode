@@ -4,21 +4,24 @@ import java.util.*;
 
 public class LongestConsecutiveSequence_128 {
     public int longestConsecutive(int[] nums) {
-        if (nums.length == 0) return 0;
-        Arrays.sort(nums);
-        Map<Integer, Integer> map = new HashMap<>();
 
-        int res = 1;
+        Set<Integer> set = new HashSet<>();
         for (int num: nums){
-            if (map.containsKey(num - 1)){
-                res = Math.max(res, map.get(num - 1) + 1);
-                map.put(num, map.get(num - 1) + 1);
-            }else {
-                map.put(num, 1);
-            }
+            set.add(num);
         }
 
-        return res;
+        int maxLen = 0;
+        for (int num: set){
+            if (set.contains(num - 1)) continue;
+            int cur = num, cnt = 0;
+            while (set.contains(cur)){
+                cnt++;
+                cur++;
+            }
+            maxLen = Math.max(maxLen, cnt);
+        }
+
+        return maxLen;
     }
 
     public static void main(String[] args) {
