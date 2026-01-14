@@ -1,7 +1,7 @@
 package com.dequeue_and_priorityqueue;
 
 import com.hashtable.SortArrayByIncreasingFrequency_1636;
-import javafx.util.Pair;
+import structure.Pair;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,6 +1,6 @@
 package com.simulation;
 
-import javafx.util.Pair;
+import structure.Pair;
 import sun.awt.image.ImageWatched;
 
 import java.util.LinkedList;

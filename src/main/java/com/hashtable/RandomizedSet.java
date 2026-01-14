@@ -1,28 +1,35 @@
 package com.hashtable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 public class RandomizedSet {
-    private final HashSet<Integer> set;
-    private final Random rand;
+    List<Integer> list = new ArrayList<>();
+    Set<Integer> set = new HashSet<>();
+    int cnt = 0;
+    Random rand = new Random();
+
     public RandomizedSet() {
-        this.set = new HashSet<>();
-        this.rand = new Random();
+
     }
 
     public boolean insert(int val) {
-        return this.set.add(val);
+        if (set.contains(val)) return false;
+        set.add(val);
+        list.add(val);
+        cnt++;
+        return true;
     }
 
     public boolean remove(int val) {
-        return this.set.remove(val);
+        if (!set.contains(val)) return false;
+        set.remove(val);
+        list.remove(new Integer(val));
+        cnt--;
+        return true;
     }
 
     public int getRandom() {
-        Integer[] array = set.toArray(new Integer[0]);
-        return array[rand.nextInt(array.length)];
+        int r = Math.abs(rand.nextInt());
+        return list.get(r % cnt);
     }
 }

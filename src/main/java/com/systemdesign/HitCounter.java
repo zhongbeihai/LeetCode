@@ -3,22 +3,28 @@ package com.systemdesign;
 import java.util.TreeMap;
 
 public class HitCounter {
-    private TreeMap<Integer, Integer> map;
-    int acc = 0;
+    int[] time = new int[300];
+    int[] hits = new int[300];
     public HitCounter() {
-        map = new TreeMap<>();
-        map.put(0, acc);
+
     }
 
     public void hit(int timestamp) {
-        map.put(timestamp, acc + 1);
-        acc++;
+        int idx = timestamp % 300;
+        if (time[idx] != timestamp){
+            time[idx] = timestamp;
+            hits[idx] = 1;
+        }else {
+            hits[idx]++;
+        }
     }
 
     public int getHits(int timestamp) {
-        int start = Math.max(timestamp - 300, 0);
-        int startValue = map.floorEntry(start).getValue();
-        int endValue = map.floorEntry(timestamp).getValue();
-        return endValue - startValue;
+        int res = 0;
+        for (int i = 0; i < 300; i++) {
+            if (time[i] >= timestamp - 299 && time[i] <= timestamp) res += hits[i];
+        }
+
+        return res;
     }
 }

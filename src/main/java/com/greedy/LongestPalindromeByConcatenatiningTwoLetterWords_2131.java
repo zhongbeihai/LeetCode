@@ -1,6 +1,6 @@
 package com.greedy;
 
-import javafx.util.Pair;
+import structure.Pair;
 
 import java.util.HashMap;
 import java.util.Map;

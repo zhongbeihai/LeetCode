@@ -2,26 +2,25 @@ package com.prefixsum;
 
 public class ProductOfArrayExceptSelf_238 {
     public int[] productExceptSelf(int[] nums) {
-        int n = nums.length;
-        int[] prefix = new int[n];
-        int[] suffix = new int[n];
-
-        prefix[0] = 1;
-        suffix[n - 1] = 1;
-        for (int i = 1; i < n; i++){
-            prefix[i] = prefix[i - 1] * nums[i - 1];
+        int zeroCnt = 0;
+        int prod = 1;
+        for (int num: nums){
+            if (num != 0) prod *= num;
+            else zeroCnt++;
         }
 
-        for (int i = n - 2; i >=0; i--){
-            suffix[i] = suffix[i + 1] * nums[i + 1];
+        int[] res = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0){
+                if (zeroCnt == 1) res[i] = prod;
+                else res[i] = 0;
+            }else {
+                if (zeroCnt == 0) res[i] = prod / nums[i];
+                else res[i] = 0;
+            }
         }
 
-        int[] arr = new int[n];
-        for(int i = 0; i < n; i++){
-            arr[i] = suffix[i] * prefix[i];
-        }
-
-        return arr;
+        return res;
     }
 
     public static void main(String[] args) {

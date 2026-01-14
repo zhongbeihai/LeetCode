@@ -1,6 +1,6 @@
 package com.backtrack;
 
-import javafx.util.Pair;
+import structure.Pair;
 
 import java.util.*;
 

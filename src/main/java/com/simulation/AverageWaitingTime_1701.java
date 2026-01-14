@@ -1,6 +1,6 @@
 package com.simulation;
 
-import sun.awt.image.OffScreenImageSource;
+
 
 public class AverageWaitingTime_1701 {
     public double averageWaitingTime(int[][] customers) {

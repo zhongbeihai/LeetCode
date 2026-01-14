@@ -1,8 +1,8 @@
 package com.binary_tree;
 
-import javafx.util.Pair;
+import structure.Pair;
 import structure.TreeNode;
-import sun.reflect.generics.tree.Tree;
+
 
 import java.util.*;
 

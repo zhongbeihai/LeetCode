@@ -1,6 +1,6 @@
 package com.prefixsum;
 
-import javafx.util.Pair;
+import structure.Pair;
 
 public class CountTheHiddenSequences_2145 {
 

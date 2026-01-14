@@ -1,6 +1,6 @@
 package com.dynamic_programming;
 
-import javafx.util.Pair;
+import structure.Pair;
 
 import java.util.*;
 

@@ -4,44 +4,61 @@ import java.util.*;
 
 public class EvaluateDivision_399 {
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
-        HashMap<String, HashMap<String, Double>> map = new HashMap<>();
+        Map<String, Map<String, Double>> map = new HashMap<>();
         for (int i = 0; i < equations.size(); i++) {
-            List<String> list = equations.get(i);
-            map.computeIfAbsent(list.get(0), k -> new HashMap<>()).put(list.get(1), values[i]);
-            map.computeIfAbsent(list.get(1), k -> new HashMap<>()).put(list.get(0), 1.0 / values[i]);
+            String st = equations.get(i).get(0), ed = equations.get(i).get(1);
+            map.computeIfAbsent(st, k -> new HashMap<>()).put(ed, values[i]);
+            map.computeIfAbsent(ed, k-> new HashMap<>()).put(st, 1.0 / values[i]);
         }
 
         double[] res = new double[queries.size()];
         int i = 0;
-        for (List<String > query: queries){
-            res[i++] = dfs(map, query.get(0), query.get(1), new HashSet<>());
-        }
-
-        return res;
-
-    }
-
-    public double dfs(HashMap<String, HashMap<String, Double>> map, String start, String end, Set<String> visited){
-        if (!map.containsKey(start)) return -1.0;
-        if (start.equals(end)) return 1.0;
-
-        visited.add(start);
-        HashMap<String, Double> nexts = map.get(start);
-        if (nexts == null) return  -1;
-
-        for (String next: nexts.keySet()){
-            if (Objects.equals(next, end)) return nexts.get(next);
-            if (!visited.contains(next)) {
-                double v = nexts.get(next) * dfs(map, next, end, visited);
-                if (v > 0) return v;
+        for (List<String> query: queries){
+            String start = query.get(0), end = query.get(1);
+            if (!map.containsKey(start) || !map.containsKey(end)) res[i++] = -1;
+            else {
+                res[i++] = dfs(map, start, end, 1.0, new HashSet<>());
             }
         }
 
-        return -1;
+        return res;
+    }
+
+    public double dfs(Map<String, Map<String, Double>> map, String start, String end, double acc, Set<String> visited){
+        if (start.equals(end)) return acc;
+        visited.add(start);
+        Map<String, Double> cur = map.get(start);
+        for (String key: cur.keySet()){
+            if (!visited.contains(key)){
+                double ans = dfs(map, key, end, acc * cur.get(key), visited);
+                if (ans != -1.0) return ans;
+            }
+        }
+
+        return -1.0;
     }
 
 
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        List<String> e1 = new ArrayList<>();
+        e1.add("a");
+        e1.add("b");
+        List<String> e2 = new ArrayList<>();
+        e2.add("b");
+        e2.add("c");
+        List<List<String>> eq = new ArrayList<>();
+        eq.add(e1);
+        eq.add(e2);
+        double[] values = {2.0, 3.0};
+
+        List<String> q1 = new ArrayList<>();
+        q1.add("a");
+        q1.add("c");
+        List<List<String>> queries = new ArrayList<>();
+        queries.add(q1);
+
+        EvaluateDivision_399 e = new EvaluateDivision_399();
+        e.calcEquation(eq, values, queries);
     }
 }
