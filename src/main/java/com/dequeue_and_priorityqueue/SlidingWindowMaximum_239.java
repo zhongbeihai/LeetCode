@@ -26,14 +26,16 @@ import java.util.PriorityQueue;
 public class SlidingWindowMaximum_239 {
     public int[] maxSlidingWindow(int[] nums, int k) {
         int n = nums.length;
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        Deque<Integer> deque = new ArrayDeque<>(); // store index
         int[] res = new int[n - k + 1];
 
-        for(int right = 0; right < n; right++){
-            while (!deque.isEmpty() && deque.peekFirst() <= right - k) deque.pollFirst();
-            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[right]) deque.pollLast();
-            deque.addLast(right);
-            if (right - k  + 1 >= 0) res[right - k + 1] = nums[deque.peekFirst()];
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            while (!deque.isEmpty() && deque.peekLast() < i - k + 1) deque.removeLast();
+            while (!deque.isEmpty() && nums[deque.peekFirst()] < nums[i]) deque.removeFirst();
+            deque.addFirst(i);
+
+            if (i - k + 1 >= 0) res[j++] = nums[deque.peekLast()];
         }
 
         return res;
