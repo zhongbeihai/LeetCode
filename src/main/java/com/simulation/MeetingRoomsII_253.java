@@ -4,27 +4,21 @@ import java.util.*;
 
 public class MeetingRoomsII_253 {
     public int minMeetingRooms(int[][] intervals) {
-        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        Arrays.sort(intervals, Comparator.comparing(i -> i[0]));
 
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        PriorityQueue<Integer> availableRooms = new PriorityQueue<>(); // store the end time of meeting
 
-        int meetRoomsCount = 0;
+        int res =  0;
         for (int[] interval: intervals){
-            if (minHeap.isEmpty()){
-                minHeap.add(interval[1]);
-                meetRoomsCount++;
+            if (availableRooms.isEmpty() || availableRooms.peek() > interval[0]){
+                res++;
             }else {
-                int earliestEndMeeting = minHeap.peek();
-                if (earliestEndMeeting > interval[0]){
-                    meetRoomsCount++;
-                }else {
-                    minHeap.poll();
-                }
-                minHeap.add(interval[0]);
+                availableRooms.poll();
             }
+            availableRooms.add(interval[1]);
         }
 
-        return meetRoomsCount;
+        return res;
     }
 
     public int twoPointerWay(int[][] intervals){
@@ -55,6 +49,6 @@ public class MeetingRoomsII_253 {
 
     public static void main(String[] args) {
         MeetingRoomsII_253 m = new MeetingRoomsII_253();
-        m.twoPointerWay(new int[][]{{13,15},{1,13},{6,9}});
+        m.minMeetingRooms(new int[][]{{13,15},{1,13},{6,9}});
     }
 }
