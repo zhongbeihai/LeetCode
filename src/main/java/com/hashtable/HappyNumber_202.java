@@ -16,28 +16,25 @@ import java.util.Map;
  * element -> hashtable
  */
 public class HappyNumber_202 {
+    Map<Integer, Integer> map = new HashMap<>();
     public boolean isHappy(int n) {
-        // <number, frequency>
-        Map<Integer, Integer> map = new HashMap<>();
-
-        int qq = n;
-        while(true){
-            int pp = getSum(qq);
-            if(pp == 1) return true;
-            if(map.containsKey(pp) && map.get(pp) > 1) return false;
-            map.put(pp, map.getOrDefault(pp, 0) + 1);
-            qq = pp;
-        }
+        if (n == 1) return true;
+        if (map.containsKey(n)) return false;
+        return isHappy(cal(n));
     }
 
-    public int getSum(int n){
-        int sum = 0;
-        while(n != 0){
-            sum += (n % 10) * (n % 10);
-            n /= 10;
+    public int cal(int n){
+        if (map.containsKey(n)) return map.get(n);
+
+        char[] cn = String.valueOf(n).toCharArray();
+        int cnt = 0;
+        for (char c: cn){
+            cnt += (c - '0') * (c - '0');
         }
 
-        return sum;
+        map.put(n, cnt);
+
+        return cnt;
     }
 
     public static void main(String[] args) {
