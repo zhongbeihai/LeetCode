@@ -22,29 +22,25 @@ public class CombinationSum_40 {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         Arrays.sort(candidates);
         backTracking(candidates, target, new ArrayList<>(), 0);
+
         return res;
     }
 
     public void backTracking(int[] candidates, int rest, List<Integer> tem, int start){
-        if(rest == 0){
-//            if(!res.contains(tem)){
-//                res.add(new ArrayList<>(tem));
-//            }
-            res.add(new ArrayList<>(tem));
-            return;
-        }
-        if(rest < 0) return;
+       if (rest == 0) {
+           res.add(new ArrayList<>(tem));
+           return;
+       }
 
-        for(int i = start; i < candidates.length; i++){
-            // 剪枝，[1,1,1,6,7],target 8,
-            // 从第一个1进入可以得到1，7的结果，从第二个1进入也可以得到1，7的结果，所以第二个1可以不用搜索了
-            // 从第一个1进入可以得到116的结果，从第二个，第三个1进入也可以得到116的结果，就不用重复搜索了
+        for (int i = start; i < candidates.length; i++) {
             if (i > start && candidates[i] == candidates[i - 1]) continue;
-            tem.add(candidates[i]);
+            if (rest - candidates[i] >= 0) {
+                tem.add(candidates[i]);
 
-            backTracking(candidates, rest - candidates[i], tem, i +1 );
+                backTracking(candidates, rest - candidates[i], tem, i + 1);
 
-            tem.remove(tem.size() - 1);
+                tem.remove(tem.size() - 1);
+            }
         }
     }
 
