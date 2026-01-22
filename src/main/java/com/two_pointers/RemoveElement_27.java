@@ -9,17 +9,22 @@ package com.two_pointers;
  */
 public class RemoveElement_27 {
 
-    // fast-slow pointers algorithm
-    // which is used to
     public int removeElement(int[] nums, int val) {
-        int slowP = 0;
-        for(int i = 0; i < nums.length; i++){
-            if(nums[i] != val){
+        int slowP = 0, cnt = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != val) {
                 nums[slowP] = nums[i];
                 slowP++;
+                cnt++;
             }
         }
-        return slowP;
+
+        return cnt++;
+    }
+
+    public static void main(String[] args) {
+        RemoveElement_27 r = new RemoveElement_27();
+        r.removeElement(new int[]{0,1,2,2,3,0,4,2}, 2);
     }
 
 }
