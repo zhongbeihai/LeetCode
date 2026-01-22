@@ -7,18 +7,22 @@ import java.util.Queue;
 
 public class RearrangeArrayElementBySign_2149 {
     public int[] rearrangeArray(int[] nums) {
-        Queue<Integer> pos = new ArrayDeque<>();
+        int n = nums.length;
+        Queue<Integer> posi = new ArrayDeque<>();
         Queue<Integer> neg = new ArrayDeque<>();
         for (int num : nums) {
-            if (num < 0) neg.add(num);
-            if (num > 0) pos.add(num);
+            if (num > 0) posi.add(num);
+            else neg.add(num);
         }
-        ArrayList<Integer> a = new ArrayList<>();
-        a.add(pos.poll());
-        while(!pos.isEmpty() || !neg.isEmpty()){
-            if(!neg.isEmpty()) a.add(neg.poll());
-            if(!pos.isEmpty()) a.add(pos.poll());
+
+        boolean flag = true;
+        int i = 0;
+        while (!posi.isEmpty() && !neg.isEmpty()){
+            nums[i++] = flag ? posi.poll() : neg.poll();
+
+            flag = !flag;
         }
-        return a.stream().mapToInt(i -> i).toArray();
+
+        return nums;
     }
 }
