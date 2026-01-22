@@ -6,26 +6,22 @@ import java.util.Stack;
 
 public class RemoveAllAdjacentDuplicatesInStringII_1209 {
     public String removeDuplicates(String s, int k) {
-        Stack<Pair<Character, Integer>> stack = new Stack<>();
+        Stack<int[]> stack = new Stack<>();
 
-        for (char c: s.toCharArray()){
-            if (stack.isEmpty() ) {stack.push(new Pair<>(c, 1)); continue;}
-
-            Pair<Character, Integer> p = stack.peek();
-            if (c == p.getKey()){
-                if (p.getValue() == k - 1){
-                    for (int i = 0; i < k - 1; i++) stack.pop();
-                }else {
-                    stack.push(new Pair<>(c, p.getValue() + 1));
+        for (int i = 0; i < s.length(); i++) {
+            if (!stack.isEmpty() && s.charAt(i) == s.charAt(stack.peek()[0]) && stack.peek()[1] == k - 1){
+                for (int j = 0; j < k - 1; j++) {
+                    stack.pop();
                 }
             }else {
-                stack.push(new Pair<>(c, 1));
+                if (stack.isEmpty() || s.charAt(stack.peek()[0]) != s.charAt(i)) stack.push(new int[]{i, 1});
+                else stack.push(new int[]{i, stack.peek()[1] + 1});
             }
         }
 
         StringBuilder sb = new StringBuilder();
         while (!stack.isEmpty()){
-            sb.append(stack.pop().getKey());
+            sb.append(s.charAt(stack.pop()[0]));
         }
 
         return sb.reverse().toString();

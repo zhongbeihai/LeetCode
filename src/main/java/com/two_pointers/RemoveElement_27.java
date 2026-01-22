@@ -19,7 +19,7 @@ public class RemoveElement_27 {
             }
         }
 
-        return cnt++;
+        return cnt;
     }
 
     public static void main(String[] args) {
