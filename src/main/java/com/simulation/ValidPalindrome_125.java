@@ -2,28 +2,22 @@ package com.simulation;
 
 public class ValidPalindrome_125 {
     public boolean isPalindrome(String s) {
-        if (s.equals(" ")) return true;
-        char[] ch = s.toCharArray();
-        int n = ch.length;
+        int n = s.length();
 
-        int i = 0, j = n - 1;
-        while (i < j){
-            char left = ch[i], right = ch[j];
-            if (!Character.isAlphabetic(left) && !Character.isDigit(left)){
-                i++;
-                continue;
+        StringBuilder sb = new StringBuilder();
+        for(char c: s.toCharArray()){
+            if (Character.isLetter(c)) sb.append(Character.toLowerCase(c));
+            if (Character.isDigit(c)) sb.append(c);
+        }
+
+        char[] charArr = sb.toString().toCharArray();
+        int left = 0, right = charArr.length - 1;
+        while (left < right){
+            if (charArr[left] != charArr[right]) {
+                return false;
             }
-            if (!Character.isAlphabetic(right) && !Character.isDigit(right)){
-                j--;
-                continue;
-            }
-            if (Character.isUpperCase(left)) left = Character.toLowerCase(left);
-            if (Character.isUpperCase(right)) right = Character.toLowerCase(right);
-            if (left != right) return false;
-            else {
-                i++;
-                j--;
-            }
+            left++;
+            right--;
         }
 
         return true;
