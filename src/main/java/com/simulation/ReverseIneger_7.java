@@ -4,30 +4,29 @@ import java.util.Stack;
 
 public class ReverseIneger_7 {
     public int reverse(int x) {
-        Stack<Character> stack = new Stack<>();
-        char[] ca = String.valueOf(x).toCharArray();
-        for (char c: ca){
-            stack.push(c);
+        Stack<Integer> stack = new Stack<>();
+
+        char[] xx = String.valueOf(x).toCharArray();
+        for (int i = 0; i < xx.length; i++) {
+            if (Character.isDigit(xx[i])) stack.push(i);
         }
 
-        while (!stack.isEmpty() && stack.peek() == '0') stack.pop();
-        if (stack.isEmpty()) return 0;
+
+        if (!stack.isEmpty() && xx[stack.peek()] == 0) stack.pop();
         long res = 0;
-        while (!stack.isEmpty() && stack.peek() != '-'){
-            res = res * 10 + stack.pop() - '0';
-            try {
-                int z = Math.toIntExact(res);
-            }catch (ArithmeticException ex){
-                return 0;
-            }
+        while (!stack.isEmpty()){
+            res = res * 10 + xx[stack.pop()] - '0';
+            if (res > Integer.MAX_VALUE) return 0;
         }
-        if (!stack.isEmpty() && stack.peek() == '-') res = -res;
 
-        return (int) res;
+        if (x < 0) res = -res;
+        if (res < Integer.MIN_VALUE) return 0;
+
+        return Math.toIntExact(res);
     }
 
     public static void main(String[] args) {
         ReverseIneger_7 r = new ReverseIneger_7();
-        r.reverse(-1230);
+        r.reverse(1534236469);
     }
 }
