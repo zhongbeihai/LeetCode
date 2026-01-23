@@ -10,9 +10,10 @@ package com.two_pointers;
 public class RemoveElement_27 {
 
     public int removeElement(int[] nums, int val) {
-        int slowP = 0, cnt = 0;
+        int slowP = 0, cnt = 0; // point to the first position where can hold valid position
+
         for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != val) {
+            if (nums[i] != val){
                 nums[slowP] = nums[i];
                 slowP++;
                 cnt++;
