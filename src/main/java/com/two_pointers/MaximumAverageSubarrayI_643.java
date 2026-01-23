@@ -2,22 +2,19 @@ package com.two_pointers;
 
 public class MaximumAverageSubarrayI_643 {
     public double findMaxAverage(int[] nums, int k) {
-        int start = 0, end = 0;
-        double sum = 0;
-        double max =Integer.MIN_VALUE;
-        while (end < k){
-            sum += nums[end];
-            end++;
+        int n = nums.length, left = 0;
+
+        double sum = 0, maxAverage = Integer.MIN_VALUE;
+        for(int right = 0; right < n; right++){
+            sum += nums[right];
+            if (right - left == k - 1) {
+                maxAverage = Math.max(maxAverage, sum / k);
+                sum -= nums[left];
+                left++;
+            }
         }
-        max = Math.max(sum, max);
-        while (end < nums.length){
-            sum += nums[end];
-            end++;
-            sum -= nums[start];
-            start++;
-            max = Math.max(sum, max);
-        }
-        return max/k;
+
+        return maxAverage;
     }
 
     public static void main(String[] args) {
