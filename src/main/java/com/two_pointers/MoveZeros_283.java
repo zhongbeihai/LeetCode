@@ -8,11 +8,12 @@ package com.two_pointers;
 public class MoveZeros_283 {
     public void moveZeroes(int[] nums) {
         int slowP = 0;
-        for(int i = 0; i < nums.length; i++){
-            if(nums[i] != 0){
-                int temp = nums[slowP];
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0){
+                int tem = nums[slowP];
                 nums[slowP] = nums[i];
-                nums[i] = temp;
+                nums[i] = tem;
+
                 slowP++;
             }
         }
