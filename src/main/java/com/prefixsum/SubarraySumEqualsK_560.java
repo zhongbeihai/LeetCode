@@ -2,6 +2,7 @@ package com.prefixsum;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Given an array of integers nums and an integer k,
@@ -11,15 +12,16 @@ import java.util.HashMap;
  */
 public class SubarraySumEqualsK_560 {
     public int subarraySum(int[] nums, int k) {
-        long curSum = 0L;
-        HashMap<Long, Integer> fre = new HashMap<>();
-        fre.put(0L, 1);
+        int n  = nums.length;
+        Map<Long, Integer> fre = new HashMap<>();
+        long curSum = 0;
+
         int res = 0;
-        for (int num: nums){
-            curSum += num;
+        fre.put(0L, 1);
+        for (int i = 0; i < n; i++) {
+            curSum += nums[i];
+            if (fre.containsKey(curSum - k)) res += fre.get(curSum - k);
             fre.put(curSum, fre.getOrDefault(curSum, 0) + 1);
-            long need = curSum - k;
-            if (fre.containsKey(need)) res += fre.get(need);
         }
 
         return res;
@@ -27,6 +29,7 @@ public class SubarraySumEqualsK_560 {
 
     public static void main(String[] args) {
         SubarraySumEqualsK_560 s = new SubarraySumEqualsK_560();
-        s.subarraySum(new int[]{1,2,3}, 3);
+         s.subarraySum(new int[]{1,2,3}, 3);
+        // s.subarraySum(new int[]{-1, -1 , 1}, 0);
     }
 }
