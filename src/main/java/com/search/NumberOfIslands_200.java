@@ -1,31 +1,29 @@
 package com.search;
 
 public class NumberOfIslands_200 {
-    public int count = 0;
-    private final int[][] dirs = new int[][]{{0,1}, {1, 0},{0, -1}, {-1, 0}};
+    int[][] dirs = new int[][]{{1,0}, {-1, 0}, {0,1 },{0 , - 1}};
     public int numIslands(char[][] grid) {
-        if (grid.length == 0) return 0;
-        int m = grid.length, n = grid[0].length;
+        int res = 0;
 
-        for (int i = 0; i < m; i++){
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == '1'){
-                    count++;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == '1') {
                     dfs(grid, i, j);
+                    res++;
                 }
             }
         }
 
-        return count;
+        return res;
     }
 
     public void dfs(char[][] grid, int x, int y){
-        int m = grid.length, n = grid[0].length;
         grid[x][y] = '0';
 
         for (int[] dir: dirs){
             int nx = x + dir[0], ny = y + dir[1];
-            if (nx >= 0 && nx < m && ny >= 0 && ny < n && grid[nx][ny] == '1') dfs(grid, nx, ny);
+
+            if (nx >= 0 && nx < grid.length && ny >= 0 && ny < grid[0].length && grid[nx][ny] == '1') dfs(grid, nx, ny);
         }
     }
 
