@@ -7,19 +7,21 @@ import java.util.stream.Collectors;
 
 public class MergeIntervals_56 {
     public int[][] merge(int[][] intervals) {
-       Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
+       Arrays.sort(intervals, Comparator.comparing(i -> i[0]));
+
        List<int[]> list = new ArrayList<>();
+       list.add(intervals[0]);
+        for (int i = 1; i < intervals.length; i++) {
+            int[] last = list.get(list.size() - 1), cur = intervals[i];
 
-       for (int[] interval: intervals){
-           if (list.isEmpty()) list.add(interval);
-           else {
-               if (interval[0] > list.get(list.size() - 1)[1]) list.add(interval);
-               if (interval[0] <= list.get(list.size() - 1)[1]) list.get(list.size() - 1)[1] = Math.max(interval[1], list.get(list.size() - 1)[1]);
-           }
-       }
+            if (cur[0] > last[1]) list.add(cur);
+            else {
+                last[1] = Math.max(last[1], cur[1]);
+            }
+        }
 
-       int[][] res = new int[list.size()][];
-        for (int i = 0; i < list.size(); i++) {
+        int[][] res = new int[list.size()][2];
+        for (int i = 0; i < res.length; i++) {
             res[i] = list.get(i);
         }
 
