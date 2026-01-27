@@ -29,7 +29,7 @@ public class RandomizedSet {
     }
 
     public int getRandom() {
-        int r = Math.abs(rand.nextInt());
-        return list.get(r % cnt);
+        int r = rand.nextInt() % cnt;
+        return list.get(r);
     }
 }

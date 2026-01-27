@@ -9,30 +9,31 @@ import java.util.Stack;
 public class DecodeString_394 {
     public String decodeString(String s) {
         Deque<Integer> numStack = new ArrayDeque<>();
-        Deque<StringBuilder> strStack = new ArrayDeque<>();
+        Deque<StringBuffer> stringStack = new ArrayDeque<>();
 
-        StringBuilder curBuilder = new StringBuilder();
-        char[] ss = s.toCharArray();
         int num = 0;
-        for (char c: ss){
+        StringBuffer curBuilder = new StringBuffer();
+        for(char c: s.toCharArray()){
             if (Character.isDigit(c)){
                 num = num * 10 + c - '0';
             } else if (c == '[') {
-                strStack.push(curBuilder);
-                curBuilder = new StringBuilder();
                 numStack.push(num);
+                stringStack.push(curBuilder);
+
+                curBuilder = new StringBuffer();
                 num = 0;
-            } else if (Character.isLetter(c)) {
+            }else if(Character.isLetter(c)){
                 curBuilder.append(c);
-            } else if (c == ']') {
-                int rep = numStack.pop();
+            }else if (c == ']'){
+                int rep = numStack.poll();
                 String base = curBuilder.toString();
-                for (int i = 0; i < rep - 1; i++) {
+                for (int i = 1; i < rep; i++) {
                     curBuilder.append(base);
                 }
-                String curs = curBuilder.toString();
-                curBuilder = strStack.pop();
-                curBuilder.append(curs);
+
+                StringBuffer prev = stringStack.pop();
+                prev.append(curBuilder);
+                curBuilder = prev;
             }
         }
 
