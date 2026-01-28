@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UndergroundSystem {
-    Map<Integer, Integer> checkinTime = new HashMap<>(); // < id, checkinTime>
-    Map<Integer, String> checkinStation = new HashMap<>(); // <id, "checkin Station">
-    Map<String, int[]> timeMap = new HashMap<>(); // <"startStation+endStation", (totalTime, number of customer)>
+    Map<Integer, String> checkinStation = new HashMap<>();
+    Map<Integer, Integer> checkinTime = new HashMap<>();
+    Map<String, Double> totalTime = new HashMap<>(); // < "startStation" + "+" + "endStation", total time>
+    Map<String, Integer> passengerCnt = new HashMap<>();
+
     public UndergroundSystem() {
 
     }
@@ -17,24 +19,16 @@ public class UndergroundSystem {
     }
 
     public void checkOut(int id, String stationName, int t) {
-        int t1 = checkinTime.get(id);
-        if (t1 > t) return;
+        int usedTime = t - checkinTime.get(id);
+        String key = checkinStation.get(id) + "+" + stationName;
 
-        int timeUsed = t - t1;
-        String s1 = checkinStation.get(id);
-
-        String key = s1 + "+" + stationName;
-        timeMap.computeIfAbsent(key, k -> new int[]{0, 0});
-        int[] tem = timeMap.get(key);
-        tem[0] += timeUsed;
-        tem[1]++;
+        totalTime.put(key, totalTime.getOrDefault(key, 0.0) + usedTime);
+        passengerCnt.put(key, passengerCnt.getOrDefault(key, 0) + 1);
     }
 
     public double getAverageTime(String startStation, String endStation) {
         String key = startStation + "+" + endStation;
-        int[] tem = timeMap.get(key);
-        if (tem[0] == 0) return 0;
 
-        return tem[0] / (double) tem[1];
+        return totalTime.get(key) / passengerCnt.get(key);
     }
 }
