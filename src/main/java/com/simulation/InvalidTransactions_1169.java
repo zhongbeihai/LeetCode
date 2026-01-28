@@ -4,33 +4,30 @@ import java.util.*;
 
 public class InvalidTransactions_1169 {
     public List<String> invalidTransactions(String[] transactions) {
-        Map<String, List<String>> mapByName = new HashMap<>();
-
-        for (String tran: transactions){
-            String[] data = tran.split(",");
-            mapByName.computeIfAbsent(data[0], v -> new ArrayList<>()).add(tran);
+        Map<String, List<String>> nameToTransaction = new HashMap<>();
+        for (String t: transactions){
+            String[] data = t.split(",");
+            nameToTransaction.computeIfAbsent(data[0], v -> new ArrayList<>()).add(t);
         }
 
         List<String> res = new ArrayList<>();
-        for (List<String> trans: mapByName.values()){
-            Set<Integer> invalid = new HashSet<>(); // store index of invalid trans
-            for (int i = 0; i < trans.size(); i++) {
-                for (int j = 0; j < trans.size(); j++) {
+        for (Map.Entry<String, List<String>> e: nameToTransaction.entrySet()){
+            Set<Integer> invalidTrans = new HashSet<>();
+            List<String > trans = e.getValue();
+            for (int i = 0; i < trans.size(); i++){
+                String[] t1 = trans.get(i).split(",");
 
-                    String[] t1 = trans.get(i).split(","), t2 = trans.get(j).split(",");
-                    Integer time1 = Integer.parseInt(t1[1]), time2 = Integer.parseInt(t2[1]);
-                    if (Math.abs(time2 - time1) <= 60 && !t1[3].equals(t2[3]) ) {
-                        invalid.add(i);
-                        invalid.add(j);
+                for (int j = 0; j < trans.size(); j++){
+                    String[] t2 = trans.get(j).split(",");
+                    if (Math.abs(Integer.parseInt(t1[1]) - Integer.parseInt(t2[1])) <= 60 && !t1[3].equals(t2[3]) ){
+                        invalidTrans.add(i);
+                        invalidTrans.add(j);
                     }
-                    if (Integer.parseInt(t1[2]) > 1000) invalid.add(i);
-                    if (Integer.parseInt(t2[2]) > 1000) invalid.add(j);
+                    if (Integer.parseInt(t1[2]) > 1000) invalidTrans.add(i);
+                    if (Integer.parseInt(t2[2]) > 1000) invalidTrans.add(j);
                 }
             }
-
-            for (int i: invalid){
-                res.add(trans.get(i));
-            }
+            for (int i: invalidTrans) res.add(trans.get(i));
         }
 
         return res;
@@ -38,7 +35,7 @@ public class InvalidTransactions_1169 {
 
     public static void main(String[] args) {
         InvalidTransactions_1169 i = new InvalidTransactions_1169();
-        String[] inva = new String[]{"alice,20,800,mtv","bob,50,1200,mtv"};
+        String[] inva = new String[]{"alice,20,1220,mtv","alice,20,1220,mtv"};
         i.invalidTransactions(inva);
     }
 }
