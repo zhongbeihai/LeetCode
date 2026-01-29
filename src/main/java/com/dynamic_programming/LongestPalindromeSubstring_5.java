@@ -2,19 +2,19 @@ package com.dynamic_programming;
 
 public class LongestPalindromeSubstring_5 {
     public String longestPalindrome(String s) {
-        char[] ss = s.toCharArray();
-        int n = ss.length;
-        String res = String.valueOf(ss[0]);
-        boolean[][] dp = new boolean[n][n];
-        for (int i = 0; i < n; i++) {
+        if (s.length() == 1) return s;
+
+        boolean[][] dp = new boolean[s.length()][s.length()];
+        for (int i = 0; i < s.length(); i++) {
             dp[i][i] = true;
         }
 
-        for (int i = 1; i < n; i++) {
-            for (int j = i - 1; j >= 0; j--) {
-                if (ss[j] == ss[i] && ((i - j == 1) || (dp[j+1][i-1]))) {
+        String res = String.valueOf(s.charAt(0));
+        for (int i = 1; i < s.length(); i++) {
+            for (int j = i - 1; j >= 0; j--){
+                if (s.charAt(j) == s.charAt(i) && (i - j == 1 || dp[j + 1][i - 1])) {
                     dp[j][i] = true;
-                    if (i - j + 1> res.length()) res = s.substring(j, i + 1);
+                    if (i - j + 1 > res.length()) res = s.substring(j, i + 1);
                 }
             }
         }
@@ -25,6 +25,6 @@ public class LongestPalindromeSubstring_5 {
     public static void main(String[] args) {
         LongestPalindromeSubstring_5 l = new LongestPalindromeSubstring_5();
         // l.longestPalindrome("aacabdkacaa");
-        l.longestPalindrome("cbbd");
+        l.longestPalindrome("bbccba");
     }
 }
