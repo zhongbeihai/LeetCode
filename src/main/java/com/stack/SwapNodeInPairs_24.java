@@ -6,23 +6,23 @@ import java.util.Stack;
 
 public class SwapNodeInPairs_24 {
     public ListNode swapPairs(ListNode head) {
-        if (head == null|| head.next == null) return head;
+        if(head == null) return head;
         ListNode dummy = new ListNode(-1, head);
-        ListNode p = head, q = dummy;
         Stack<ListNode> stack = new Stack<>();
-        while (p != null){
-            for (int i = 0; i < 2; i++){
-                stack.push(p);
-                p = p.next;
+
+        ListNode worker = dummy;
+        while (head != null){
+            for (int i = 0; i < 2 && head != null; i++) {
+                stack.push(head);
+                head = head.next;
             }
             while (!stack.isEmpty()){
-                q.next = stack.pop();
-                q = q.next;
+                worker.next = stack.pop();
+                worker = worker.next;
             }
         }
+        worker.next = null;
 
-
-        q.next = null;
         return dummy.next;
     }
 
