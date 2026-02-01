@@ -4,11 +4,17 @@ import structure.ListNode;
 
 public class RemoveDuplcatesFromSortedList_83 {
     public ListNode deleteDuplicates(ListNode head) {
-        ListNode dummy = new ListNode(-101, head);
-        ListNode prev = dummy;
-        while (prev != null){
-            while (prev.next != null && prev.val == prev.next.val) prev.next = prev.next.next;
-            prev = prev.next;
+        if (head == null || head.next == null) return head;
+
+        ListNode dummy = new ListNode(-1, head);
+        ListNode p1 = head, p2 = head.next;
+
+        while (p1 != null && p2 != null){
+            while (p2 != null && p1.val == p2.val) p2 = p2.next;
+            p1.next = p2;
+
+            p1 = p1.next;
+            if (p2 != null) p2 = p2.next;
         }
 
         return dummy.next;
