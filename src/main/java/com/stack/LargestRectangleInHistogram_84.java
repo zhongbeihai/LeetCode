@@ -8,32 +8,23 @@ import java.util.concurrent.DelayQueue;
 
 public class LargestRectangleInHistogram_84 {
     public int largestRectangleArea(int[] heights) {
-        Deque<Integer> stack = new ArrayDeque<>();
-        
-        int maxArea = 0;
-        for (int i = 0; i < heights.length; i++) {
-            if (stack.isEmpty() || heights[i] >= heights[stack.peek()] ){
-                stack.push(i);
-            }else {
-                int height = 0;
-                int width = 0;
-                while (!stack.isEmpty() && heights[i] < heights[stack.peek()]) {
-                    height = heights[stack.pop()];
-                    width++;
-                    if (height != 0) maxArea = Math.max(maxArea, width * height);
-                }
-            }
+        int n = heights.length;
+        int[] heightsArr = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            heightsArr[i] = heights[i];
         }
+        heightsArr[n] = 0;
 
-        if (!stack.isEmpty()){
-            int width = 0;
-            int height = 0;
-            while (!stack.isEmpty()) {
-                height = heights[stack.pop()];
-                width++;
-                maxArea = Math.max(maxArea, width * height);
+        Deque<Integer> stack = new ArrayDeque<>();
+        int maxArea = 0;
+        for (int i = 0; i <= n; i++) {
+            while (!stack.isEmpty() && heightsArr[i] < heightsArr[stack.peek()]) {
+                int idx = stack.pop();
+                int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+                int heigh = heightsArr[idx];
+                maxArea = Math.max(maxArea, width * heigh);
             }
-
+            stack.push(i);
         }
 
         return maxArea;
@@ -41,7 +32,7 @@ public class LargestRectangleInHistogram_84 {
 
     public static void main(String[] args) {
         LargestRectangleInHistogram_84 l = new LargestRectangleInHistogram_84();
-         l.largestRectangleArea(new int[]{2,1,5,6,2,3});
+        l.largestRectangleArea(new int[]{2, 1, 5, 6, 2, 3});
         // l.largestRectangleArea(new int[]{2, 1, 2});
     }
 }
