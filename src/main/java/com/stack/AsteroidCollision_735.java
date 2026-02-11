@@ -1,35 +1,30 @@
 package com.stack;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 public class AsteroidCollision_735 {
     public int[] asteroidCollision(int[] asteroids) {
-        Stack<Integer> stack = new Stack<>();
-        for (int asteroid: asteroids){
-            if (stack.isEmpty()) {
-                stack.push(asteroid);
-                continue;
-            }
+        if (asteroids.length == 0) return new int[0];
 
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i < asteroids.length; i++){
             boolean push = true;
-            while (!stack.isEmpty() && stack.peek() > 0 &&  asteroid < 0){
-                int s = Math.abs(stack.peek()), a = Math.abs(asteroid);
-                if (s < a){
-                    stack.pop();
-                }else if (s == a){
-                    stack.pop();
-                    push = false;
-                    break;
-                }else {
+            while (!stack.isEmpty() && stack.peek() > 0 && asteroids[i] < 0){
+                int last = Math.abs(stack.peek()), cur = Math.abs(asteroids[i]);
+                if (last < cur) stack.pop();
+                else {
+                    if (last == cur) stack.pop();
                     push = false;
                     break;
                 }
             }
-            if (push) stack.push(asteroid);
+            if (push) stack.push(asteroids[i]);
         }
 
         int[] res = new int[stack.size()];
-        for (int i = stack.size() - 1; i >=0 ; i--){
+        for (int i = res.length - 1; i >= 0; i--){
             res[i] = stack.pop();
         }
 
@@ -38,6 +33,6 @@ public class AsteroidCollision_735 {
 
     public static void main(String[] args) {
         AsteroidCollision_735 a = new AsteroidCollision_735();
-        a.asteroidCollision(new int[]{-2,-1,1,2});
+        a.asteroidCollision(new int[]{5,10,-5});
     }
 }
