@@ -1,19 +1,20 @@
 package com.two_pointers;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class TwoSum_1 {
     public int[] twoSum(int[] nums, int target) {
-        HashMap<Integer, Integer> idxMap = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
 
         for (int i = 0; i < nums.length; i++){
-            if (idxMap.containsKey(target - nums[i])){
-                if (idxMap.get(target - nums[i]) != i) return new int[]{i, idxMap.get(target - nums[i])};
+            if (map.containsKey(target - nums[i])){
+                return new int[]{map.get(target - nums[i]), i};
             }
-            idxMap.put(nums[i], i);
+            map.put(nums[i], i);
         }
 
-        return new int[]{0,0};
+        return new int[]{};
     }
 
     public static void main(String[] args) {
