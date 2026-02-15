@@ -3,38 +3,35 @@ package com.dynamic_programming;
 import java.util.Arrays;
 
 public class LongestIncreasingPathInAMatrix_329 {
-    private int[][] dp;
+    private int[][] memo;
+    private int[][] dirs = new int[][]{{0,1}, {0, -1}, {1,0}, {-1, 0}};
     public int longestIncreasingPath(int[][] matrix) {
-        dp = new int[matrix.length][matrix[0].length];
-        for(int[] d: dp){
-            Arrays.fill(d, -1);
-        }
-        int maxx = -1;
-        for(int i = 0; i < matrix.length; i++){
-            for(int j = 0; j < matrix[0].length; j++){
-                if(dp[i][j] == -1){
-                    maxx = Math.max(maxx, dfs(matrix, i, j));
-                }
+        int m = matrix.length, n = matrix[0].length;
+        memo = new int[m][n];
+
+        int res = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                res = Math.max(res, dfs(matrix, i, j));
             }
         }
 
-        return maxx;
+        return res;
     }
 
-    public int dfs(int[][] matrix, int r, int c){
-        if(dp[r][c] != -1) return dp[r][c];
+    public int dfs(int[][] matrix, int x, int y){
+        if (memo[x][y] != 0) return memo[x][y];
 
-        int[][] dirs = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        int maxx = 1;
-        for(int[] dir: dirs){
-            int nr = r + dir[0];
-            int nc = c + dir[1];
-            if(nr >= 0 && nr < matrix.length && nc >= 0 && nc < matrix[0].length && matrix[nr][nc] > matrix[r][c]){
-                maxx = Math.max(maxx, dfs(matrix, nr, nc));
+        int cur = 0;
+        for (int[] dir : dirs){
+            int nx = x + dir[0], ny = y + dir[1];
+            if (nx >= 0 && nx < matrix.length && ny >= 0 && ny < matrix[0].length && matrix[nx][ny] > matrix[x][y]){
+                cur = Math.max(cur, dfs(matrix, nx, ny));
             }
         }
-        dp[r][c] = maxx;
-        return maxx;
+
+        memo[x][y] = cur + 1;
+        return memo[x][y];
     }
 
     public static void main(String[] args) {
