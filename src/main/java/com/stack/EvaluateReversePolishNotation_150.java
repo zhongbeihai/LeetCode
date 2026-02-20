@@ -1,6 +1,8 @@
 package com.stack;
 
 import java.awt.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -11,23 +13,22 @@ import java.util.Stack;
  */
 public class EvaluateReversePolishNotation_150 {
     public int evalRPN(String[] tokens) {
-        Stack<String> stack = new Stack<>();
-
-        for(int i = 0; i < tokens.length; i++){
-            if(Objects.equals(tokens[i], "+") || Objects.equals(tokens[i], "-") ||
-                    Objects.equals(tokens[i], "/") || Objects.equals(tokens[i], "*")){
-                int num1 = Integer.parseInt(stack.pop());
-                int num2 = Integer.parseInt(stack.pop());
-                if(Objects.equals(tokens[i], "+")) stack.push(Integer.toString(num2 + num1));
-                if(Objects.equals(tokens[i], "-")) stack.push(Integer.toString(num2 - num1));
-                if(Objects.equals(tokens[i], "/")) stack.push(Integer.toString(num2 / num1));
-                if(Objects.equals(tokens[i], "*")) stack.push(Integer.toString(num2 * num1));
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (String token: tokens){
+            if (token.equals("+")){
+                int sec = stack.pop(), fir = stack.pop();
+                stack.push(sec + fir);
+            } else if (token.equals("*")) {
+                int sec = stack.pop(), fir = stack.pop();
+                stack.push(sec * fir);
+            } else if (token.equals("/")) {
+                int sec = stack.pop(), fir = stack.pop();
+                stack.push(fir / sec);
             }else {
-                stack.push(tokens[i]);
+                stack.push(Integer.parseInt(token));
             }
-
         }
-        return Integer.parseInt(stack.pop());
+        return stack.pop();
     }
 
     public static void main(String[] args) {
