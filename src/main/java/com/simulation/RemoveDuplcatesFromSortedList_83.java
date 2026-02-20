@@ -6,15 +6,15 @@ public class RemoveDuplcatesFromSortedList_83 {
     public ListNode deleteDuplicates(ListNode head) {
         if (head == null || head.next == null) return head;
 
-        ListNode dummy = new ListNode(-1, head);
-        ListNode p1 = head, p2 = head.next;
-
-        while (p1 != null && p2 != null){
+        ListNode dummy = new ListNode(Integer.MIN_VALUE, head);
+        ListNode p1 = dummy, p2 = dummy.next;
+        while (p2 != null){
             while (p2 != null && p1.val == p2.val) p2 = p2.next;
             p1.next = p2;
-
-            p1 = p1.next;
-            if (p2 != null) p2 = p2.next;
+            if (p2 != null){
+                p1 = p1.next;
+                p2 = p2.next;
+            }
         }
 
         return dummy.next;
