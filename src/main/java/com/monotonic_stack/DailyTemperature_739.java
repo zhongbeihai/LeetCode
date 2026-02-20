@@ -13,16 +13,18 @@ import java.util.*;
  */
 public class DailyTemperature_739 {
     public int[] dailyTemperatures(int[] temperatures) {
-        // put the index into the monotonic stack
-        Stack<Integer> stack = new Stack<>();
+        Deque<Integer> stack = new ArrayDeque<>(); // store index, keep it a min stack
+
         int[] res = new int[temperatures.length];
-        int count = 0;
-        for(int i = 0; i < temperatures.length; i++){
-            while (!stack.isEmpty() && temperatures[stack.peek()] < temperatures[i]){
-                System.out.println(temperatures[stack.peek()] +" < " +temperatures[i]);
-                res[stack.peek()] = i - stack.pop();
+        for (int i = 0; i < temperatures.length; i++) {
+            if (stack.isEmpty() || temperatures[i] <= temperatures[stack.peek()]) stack.push(i);
+            else {
+                while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]){
+                    int lastIDx = stack.pop();
+                    res[lastIDx] = i - lastIDx;
+                }
+                stack.push(i);
             }
-            stack.add(i);
         }
 
         return res;

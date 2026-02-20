@@ -24,7 +24,10 @@ public class EvaluateReversePolishNotation_150 {
             } else if (token.equals("/")) {
                 int sec = stack.pop(), fir = stack.pop();
                 stack.push(fir / sec);
-            }else {
+            } else if (token.equals("-")) {
+                int sec = stack.pop(), fir = stack.pop();
+                stack.push(fir - sec);
+            } else {
                 stack.push(Integer.parseInt(token));
             }
         }
