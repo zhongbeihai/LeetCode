@@ -6,21 +6,20 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 public class MinStack {
-    Stack<Integer> stack = new Stack<>();
-    Stack<Integer> minStack = new Stack<>();
-    public MinStack() {
+    Deque<Integer> stack = new ArrayDeque<>();
+    Deque<Integer> curMin = new ArrayDeque<>();
 
-    }
+    public MinStack(){}
 
     public void push(int val) {
         stack.push(val);
-        if (minStack.isEmpty() || minStack.peek() > val) minStack.push(val);
-        else minStack.push(minStack.peek());
+        if (curMin.isEmpty() || val <= curMin.peek()) curMin.push(val);
+        else curMin.push(curMin.peek());
     }
 
     public void pop() {
         stack.pop();
-        minStack.pop();
+        curMin.pop();
     }
 
     public int top() {
@@ -28,6 +27,6 @@ public class MinStack {
     }
 
     public int getMin() {
-        return minStack.peek();
+        return curMin.peek();
     }
 }
