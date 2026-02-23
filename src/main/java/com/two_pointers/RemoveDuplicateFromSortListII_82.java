@@ -3,7 +3,30 @@ package com.two_pointers;
 import structure.ListNode;
 
 public class RemoveDuplicateFromSortListII_82 {
+
     public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        ListNode dummy = new ListNode(Integer.MIN_VALUE, head);
+        ListNode prev = dummy, cur = head, next = head.next;
+        while (next != null){
+            if (cur.val == next.val){
+                while (next != null && cur.val == next.val){
+                    cur = cur.next;
+                    next = next.next;
+                }
+                cur = cur.next;
+                if (next != null) next = next.next;
+            }
+            prev.next = cur;
+            prev = prev.next;
+            if (cur != null) cur = cur.next;
+            if (next != null) next = next.next;
+        }
+
+        return dummy.next;
+    }
+    public ListNode deleteDuplicates_stack(ListNode head) {
         if (head == null || head.next == null) return head;
         ListNode res = new ListNode(0, head);
         ListNode prev = res;

@@ -14,39 +14,31 @@ import java.util.*;
  */
 public class CombinationSum_39 {
     private List<List<Integer>> res = new ArrayList<>();
-
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        if (candidates.length == 0) return res;
+
         Arrays.sort(candidates);
-        backtrack(candidates, target, new ArrayList<>(), 0, 0);
+        backtrack(candidates, target, 0, new ArrayList<>());
 
         return res;
     }
 
-    public void backtrack(int[] candidates, int target, List<Integer> tem, int curSum, int start){
-        if (curSum >= target){
-            if (curSum == target) res.add(new ArrayList<>(tem));
+    public void backtrack(int[] candidates, int rest, int startIdx, List<Integer> tem){
+        // termination conditions
+        if (rest == 0){
+            res.add(new ArrayList<>(tem));
             return;
         }
+        if (rest < 0) return;
 
-        for (int i = start; i < candidates.length; i++) {
+        for (int i = startIdx; i < candidates.length; i++){
+            if (candidates[i] > rest) break;
+            if (i > 0 && candidates[i] == candidates[i - 1]) continue;
+
             tem.add(candidates[i]);
-
-            backtrack(candidates, target, tem, curSum + candidates[i], i);
-
+            backtrack(candidates, rest - candidates[i], i, tem);
             tem.remove(tem.size() - 1);
         }
-    }
-
-    public static List<List<Integer>> mergeSimilarLists(List<List<Integer>> listOfLists) {
-        Map<List<Integer>, List<Integer>> map = new HashMap<>();
-
-        for (List<Integer> list : listOfLists) {
-            List<Integer> sortedList = new ArrayList<>(list);
-            Collections.sort(sortedList);
-            map.putIfAbsent(sortedList, list);
-        }
-
-        return new ArrayList<>(map.values());
     }
 
     public static void main(String[] args) {
