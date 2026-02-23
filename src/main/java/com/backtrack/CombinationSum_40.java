@@ -20,27 +20,28 @@ import java.util.List;
 public class CombinationSum_40 {
     private List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        if (candidates.length == 0) return res;
+
         Arrays.sort(candidates);
-        backTracking(candidates, target, new ArrayList<>(), 0);
+        backtrack(candidates, target, 0, new ArrayList<>());
 
         return res;
     }
 
-    public void backTracking(int[] candidates, int rest, List<Integer> tem, int start){
-       if (rest == 0) {
-           res.add(new ArrayList<>(tem));
-           return;
-       }
+    public void backtrack(int[] candidates, int rest, int startIdx, List<Integer> tem){
+        if (rest == 0) {
+            res.add(new ArrayList<>(tem));
+            return;
+        }
+        if (rest < 0) return;
 
-        for (int i = start; i < candidates.length; i++) {
-            if (i > start && candidates[i] == candidates[i - 1]) continue;
-            if (rest - candidates[i] >= 0) {
-                tem.add(candidates[i]);
+        for (int i =  startIdx; i < candidates.length; i++){
+            if (candidates[i] > rest) break;
+            if (i > startIdx && candidates[i] == candidates[i - 1]) continue;
 
-                backTracking(candidates, rest - candidates[i], tem, i + 1);
-
-                tem.remove(tem.size() - 1);
-            }
+            tem.add(candidates[i]);
+            backtrack(candidates, rest - candidates[i], i + 1, tem);
+            tem.remove(tem.size() - 1);
         }
     }
 

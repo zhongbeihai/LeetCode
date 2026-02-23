@@ -33,7 +33,7 @@ public class CombinationSum_39 {
 
         for (int i = startIdx; i < candidates.length; i++){
             if (candidates[i] > rest) break;
-            if (i > 0 && candidates[i] == candidates[i - 1]) continue;
+            if (i > startIdx && candidates[i] == candidates[i - 1]) continue;
 
             tem.add(candidates[i]);
             backtrack(candidates, rest - candidates[i], i, tem);
