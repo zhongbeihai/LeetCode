@@ -1,32 +1,33 @@
 package com.search;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class SwimInRisingWater_778 {
-    int[][] dirs = new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
+    private int[][] dirs = new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
     public int swimInWater(int[][] grid) {
-        int n = grid.length, m = grid[0].length;
-        int[][] memo = new int[n][m];
-        for (int[] me: memo){
-            Arrays.fill(me, Integer.MAX_VALUE);
-        }
+        int n = grid.length;
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(i -> i[2])); // {x, y, time}
+        pq.add(new int[]{0, 0,0 });
+        grid[0][0] = -1;
 
-        dfs(grid, memo, 0, 0, grid[0][0]);
+        while (!pq.isEmpty()){
+            int[] cur = pq.poll();
+            int x= cur[0], y = cur[1], curTime = cur[2];
+            if (x == n - 1 && y == n - 1) return curTime;
 
-        return memo[n - 1][m - 1];
-    }
+            for (int[] dir: dirs){
+                int nx = x + dir[0], ny = y + dir[1];
 
-    public void dfs(int[][] grid, int[][] memo, int x, int y, int now){
-        int n = grid.length, m = grid[0].length;
-
-        memo[x][y] = now;
-        for (int[] dir: dirs){
-            int nx = x + dir[0], ny = y + dir[1];
-
-            if (nx >= 0 && ny >= 0 && nx < n && ny < m && now < memo[nx][ny]){
-                dfs(grid, memo, nx, ny , Math.max(now, grid[nx][ny]));
+                if (nx >= 0 && nx < n && ny >= 0 && ny < n && grid[nx][ny] != -1){
+                    pq.add(new int[]{nx, ny, Math.max(curTime, grid[nx][ny])});
+                    grid[nx][ny] = -1;
+                }
             }
         }
+
+        return -1;
     }
 
     public static void main(String[] args) {
