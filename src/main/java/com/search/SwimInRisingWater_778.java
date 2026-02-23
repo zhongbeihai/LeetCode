@@ -9,7 +9,7 @@ public class SwimInRisingWater_778 {
     public int swimInWater(int[][] grid) {
         int n = grid.length;
         PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(i -> i[2])); // {x, y, time}
-        pq.add(new int[]{0, 0,0 });
+        pq.add(new int[]{0, 0, grid[0][0]});
         grid[0][0] = -1;
 
         while (!pq.isEmpty()){

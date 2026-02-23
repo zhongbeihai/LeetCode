@@ -1,24 +1,31 @@
 package com.simulation;
 
+import com.backtrack.NQueens_51;
+
 import java.util.*;
 
 public class MeetingRoomsII_253 {
     public int minMeetingRooms(int[][] intervals) {
+        int n = intervals.length;
+
         Arrays.sort(intervals, Comparator.comparing(i -> i[0]));
-
-        PriorityQueue<Integer> availableRooms = new PriorityQueue<>(); // store the end time of meeting
-
-        int res =  0;
-        for (int[] interval: intervals){
-            if (availableRooms.isEmpty() || availableRooms.peek() > interval[0]){
-                res++;
-            }else {
-                availableRooms.poll();
+        int totalMeetRoom = 0, availMeetRoom = 0;
+        PriorityQueue<Integer> meetingIn = new PriorityQueue<>();
+        for (int i = 0; i < n; i++) {
+            int s = intervals[i][0], e = intervals[i][1];
+            while (!meetingIn.isEmpty() && meetingIn.peek() <= s){
+                meetingIn.poll();
+                availMeetRoom++;
             }
-            availableRooms.add(interval[1]);
+            if (availMeetRoom > 0){
+                availMeetRoom--;
+            }else {
+                totalMeetRoom++;
+            }
+            meetingIn.add(e);
         }
 
-        return res;
+        return totalMeetRoom;
     }
 
     public int twoPointerWay(int[][] intervals){
