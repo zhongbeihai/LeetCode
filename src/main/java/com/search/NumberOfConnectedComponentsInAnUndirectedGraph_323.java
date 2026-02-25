@@ -1,42 +1,38 @@
 package com.search;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.backtrack.NQueens_51;
+
+import java.util.*;
 
 public class NumberOfConnectedComponentsInAnUndirectedGraph_323 {
-    static class UnionFind {
-        public int[] parent;
-        Set<Integer> set;
-        public UnionFind(int size){
-            parent = new int[size];
-            set = new HashSet<>();
-            for (int i = 0; i < size; i++){
-                parent[i] = i;
-                set.add(i);
+    public int countComponents(int n, int[][] edges) {
+        List<List<Integer>> adjList = new ArrayList<>();
+        for (int i = 0; i < n; i++) {adjList.add(new ArrayList<>());}
+        for (int[] edge: edges){
+            adjList.get(edge[0]).add(edge[1]);
+            adjList.get(edge[1]).add(edge[0]);
+        }
+
+        int res = 0;
+        boolean[] visited = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]){
+                Queue<Integer> queue = new ArrayDeque<>();
+                queue.add(i);
+
+                while (!queue.isEmpty()){
+                    int cur = queue.poll();
+                    visited[cur] = true;
+                    List<Integer> adj = adjList.get(cur);
+                    for (int next: adj){
+                        if (!visited[next]) queue.add(next);
+                    }
+                }
+                res++;
             }
         }
 
-        public int findParent(int n){
-            if (parent[n] == n) return n;
-            parent[n] = findParent(parent[n]);
-            return parent[n];
-        }
-
-        public void union(int x, int y){
-            int pX = findParent(x);
-            int pY = findParent(y);
-            if (pX == pY) return;
-            parent[pX] = pY;
-            set.remove(pX);
-        }
-    }
-    public int countComponents(int n, int[][] edges) {
-        UnionFind u = new UnionFind(n);
-        for (int[] edge: edges){
-            u.union(edge[0], edge[1]);
-        }
-
-        return u.set.size();
+        return res;
     }
 
     public static void main(String[] args) {
