@@ -35,7 +35,6 @@ public class GraphValidTree_261 {
                 rank[xp]++;
             }
             islands--;
-
             return true;
         }
     }
