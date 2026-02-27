@@ -25,10 +25,10 @@ public class CountUnreachblePairsNodeInUndirectedGraph_2316 {
             if (xp != yp){
                 if (rank[xp] > rank[yp]){
                     parent[yp] = xp;
-                    rank[xp]++;
+                    rank[xp] += rank[yp];
                 }else {
                     parent[xp] = yp;
-                    rank[yp]++;
+                    rank[yp] += rank[xp];
                 }
             }
         }
@@ -44,11 +44,12 @@ public class CountUnreachblePairsNodeInUndirectedGraph_2316 {
         for (int i = 0; i < n; i++) {
             int p = u.findP(i);
             if (!roots.contains(p)){
-                res += n - u.rank[p];
+                long size = u.rank[p];
+                res += size * (n - size);
                 roots.add(p);
             }
         }
-        return res;
+        return res / 2;
     }
 
     public static void main(String[] args) {
