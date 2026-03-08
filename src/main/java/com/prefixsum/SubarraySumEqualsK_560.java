@@ -12,19 +12,19 @@ import java.util.Map;
  */
 public class SubarraySumEqualsK_560 {
     public int subarraySum(int[] nums, int k) {
-        Map<Long, Integer> sumFre = new HashMap<>(); // <Sum, Last Occur Index>
+        Map<Long, Integer> sumToIdx = new HashMap<>(); // <Sum, times of sum occur>
+
         long curSum = 0L;
-
-        int cnt = 0;
-        sumFre.put(0L, 1);
-        for (int i = 0; i < nums.length; i++) {
+        sumToIdx.put(0L, 1);
+        int res = 0;
+        for (int i = 0; i < nums.length; i++){
             curSum += nums[i];
-            if (sumFre.containsKey(curSum - k)) cnt += sumFre.get(curSum - k);
+            if (sumToIdx.containsKey(curSum - k)) res += sumToIdx.get(curSum - k);
 
-            sumFre.put(curSum, sumFre.getOrDefault(curSum, 0) + 1);
+            sumToIdx.put(curSum, sumToIdx.getOrDefault(curSum, 0) + 1);
         }
 
-        return cnt;
+        return res;
     }
 
     public static void main(String[] args) {
