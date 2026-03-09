@@ -9,22 +9,21 @@ public class SwimInRisingWater_778 {
     private int[][] dirs = new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
     public int swimInWater(int[][] grid) {
         int n = grid.length;
-
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(i -> i[2])); // {x, y, time];
-        pq.add(new int[]{0,0, 0});
-
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(i -> i[2])); // {x, y, time}
+        pq.add(new int[]{0, 0, grid[0][0]});
         grid[0][0] = -1;
+
         while (!pq.isEmpty()){
             int[] cur = pq.poll();
             int x = cur[0], y = cur[1], curTime = cur[2];
+            if (x == n-1 && y == n-1 ) return curTime;
 
-            if (x == n - 1 && y == n - 1) return curTime;
 
             for (int[] dir: dirs){
                 int nx = x + dir[0], ny = y + dir[1];
                 if (nx >= 0 && nx < n && ny >= 0 && ny < n && grid[nx][ny] != -1){
                     pq.add(new int[]{nx, ny, Math.max(curTime, grid[nx][ny])});
-                    grid[nx][ny] = -1;
+                    grid[x][y] = -1;
                 }
             }
         }
