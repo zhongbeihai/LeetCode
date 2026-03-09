@@ -6,72 +6,63 @@ import java.awt.peer.FramePeer;
 import java.util.*;
 
 public class AccountMerge_721 {
-    class UnionFind_721{
-        HashMap<String, String> parent = new HashMap<>();
-        HashMap<String, Integer> rank = new HashMap<>();
+    class UnionFind_721 {
+        Map<String, String> parent = new HashMap<>();
+        Map<String, Integer> rank = new HashMap<>();
 
-        public void add(String x){
-            if (!parent.containsKey(x)){
-                parent.put(x, x);
-                rank.put(x, 1);
-            }
+        public void add(String x) {
+            parent.put(x, x);
+            rank.put(x, 1);
         }
 
-        public String find(String x){
+        public String find(String x) {
             if (!parent.get(x).equals(x)) parent.put(x, find(parent.get(x)));
             return parent.get(x);
         }
 
-        public void union(String p, String c){
-            String rootp = find(p), rootc = find(c);
+        public void connect(String x, String y) {
+            String rootX = find(x), rootY = find(y);
+            if (rootY.equals(rootX)) return;
 
-            if (rootc.equals(rootp)) return;
-
-            int rankp = rank.get(rootp), rankc = rank.get(rootc);
-            if (rankp < rankc){
-                parent.put(rootp, rootc);
-                rank.put(rootc, rankc + rankp);
-            }else {
-                parent.put(rootc, rootp);
-                rank.put(rootp, rankc + rankp);
+            int rankX = rank.get(x), rankY = rank.get(y);
+            if (rankX < rankY) {
+                parent.put(rootX, rootY);
+                rank.put(rootY, rankX + rankY);
+            } else {
+                parent.put(rootY, rootX);
+                rank.put(rootX, rankX + rankY);
             }
         }
     }
+
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String, String> emailToName = new HashMap<>();
         UnionFind_721 u = new UnionFind_721();
-        HashMap<String, String> map = new HashMap<>(); // email -> name
-
-        for (List<String> acc: accounts){
+        for (List<String> acc : accounts) {
             String name = acc.get(0);
-
             for (int i = 1; i < acc.size(); i++) {
-                String email = acc.get(i);
-                u.add(email);
-                map.put(email, name);
+                u.add(acc.get(i));
+                emailToName.put(acc.get(i), name);
             }
-
-            String firstEmail =  acc.get(1);
-            for (int i = 2; i < acc.size(); i++){
-                u.union(firstEmail, acc.get(i));
-            }
+            String firstEmail = acc.get(1);
+            for (int i = 2; i < acc.size(); i++) u.connect(firstEmail, acc.get(i));
         }
 
-        HashMap<String, TreeSet<String>> groups = new HashMap<>();
-        for (String email: map.keySet()){
+        Map<String, TreeSet<String>> parentToChildren = new HashMap<>();
+        for (String email : emailToName.keySet()) {
             String root = u.find(email);
-            groups.computeIfAbsent(root, v -> new TreeSet<>()).add(email);
+            parentToChildren.computeIfAbsent(root, v -> new TreeSet<>()).add(email);
         }
 
         List<List<String>> res = new ArrayList<>();
-        for (String key: groups.keySet()){
-            String name = map.get(key);
+        for (String k : parentToChildren.keySet()) {
             List<String> tem = new ArrayList<>();
-            tem.add(name);
-            tem.addAll(groups.get(key));
-
+            tem.add(emailToName.get(k));
+            tem.addAll(parentToChildren.get(k));
             res.add(tem);
         }
 
         return res;
     }
+
 }
