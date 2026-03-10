@@ -7,25 +7,21 @@ import java.util.*;
 public class MeetingRoomsII_253 {
     public int minMeetingRooms(int[][] intervals) {
         int n = intervals.length;
-
         Arrays.sort(intervals, Comparator.comparing(i -> i[0]));
-        int totalMeetRoom = 0, availMeetRoom = 0;
-        PriorityQueue<Integer> meetingIn = new PriorityQueue<>();
-        for (int i = 0; i < n; i++) {
-            int s = intervals[i][0], e = intervals[i][1];
-            while (!meetingIn.isEmpty() && meetingIn.peek() <= s){
-                meetingIn.poll();
-                availMeetRoom++;
-            }
-            if (availMeetRoom > 0){
-                availMeetRoom--;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+        int rooms = 0;
+        for (int[] m: intervals){
+            int startTime = m[0], endTime = m[1];
+            if (pq.isEmpty() || pq.peek() > startTime){
+                rooms++;
             }else {
-                totalMeetRoom++;
+                pq.poll();
             }
-            meetingIn.add(e);
+            pq.add(endTime);
         }
 
-        return totalMeetRoom;
+        return rooms;
     }
 
     public int twoPointerWay(int[][] intervals){
