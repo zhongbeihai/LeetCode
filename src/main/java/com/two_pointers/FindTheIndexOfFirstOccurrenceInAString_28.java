@@ -2,12 +2,18 @@ package com.two_pointers;
 
 public class FindTheIndexOfFirstOccurrenceInAString_28 {
     public int strStr(String haystack, String needle) {
-        for (int i = 0; i < haystack.length(); i++) {
+        int n = haystack.length(), m = needle.length();
+        for (int i = 0; i < n; i++) {
             if (haystack.charAt(i) == needle.charAt(0)){
-                int p1 = 0;
-                while (i + p1 < haystack.length() && p1 < needle.length()
-                        && haystack.charAt(i + p1) == needle.charAt(p1)) p1++;
-                if (p1 == needle.length()) return i;
+                if (n - i < m) return -1;
+                boolean flag = true;
+                for (int j = 0; j < m; j++) {
+                    if (haystack.charAt(i + j) != needle.charAt(j)) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) return i;
             }
         }
 
