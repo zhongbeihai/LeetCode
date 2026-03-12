@@ -1,5 +1,6 @@
 package com.binary_tree;
 
+import com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets;
 import structure.Pair;
 
 import java.util.ArrayDeque;
@@ -26,23 +27,23 @@ class Node {
 }
 public class PopulateingNextingRightPointersInEachNodeII_117 {
     public Node connect(Node root) {
-        if (root == null) return null;
+        if (root == null) return root;
 
-        ArrayDeque<Pair<Node, Integer>> deque = new ArrayDeque<>();
-        deque.add(new Pair<>(root, 1));
+        ArrayDeque<Pair<Node, Integer>> queue = new ArrayDeque<>();
+        queue.add(new Pair<>(root, 0));
+        Pair<Node, Integer> lastPair = new Pair<>(new Node(), -1);
+        while (!queue.isEmpty()){
+            Pair<Node, Integer> cur = queue.poll();
+            Node curNode = cur.getKey();
+            int curLevel = cur.getValue();
 
-        while (!deque.isEmpty()){
-            Pair<Node, Integer> p = deque.pollFirst();
-            Node cn = p.getKey();
-            Integer dep = p.getValue();
+            if (lastPair.getValue() == curLevel) lastPair.getKey().next = curNode;
+            else lastPair.getKey().next = null;
+            lastPair = cur;
 
-            if (!deque.isEmpty() && deque.peekFirst().getValue() == dep) cn.next = deque.peekFirst().getKey();
-            else cn.next = null;
-
-            if (cn.left != null) deque.addLast(new Pair<>(cn.left, dep + 1));
-            if (cn.right != null) deque.addLast(new Pair<>(cn.right, dep + 1));
+            if (curNode.left != null) queue.add(new Pair<>(curNode.left, curLevel + 1));
+            if (curNode.right != null) queue.add(new Pair<>(curNode.right, curLevel + 1));
         }
-
         return root;
     }
 
