@@ -7,19 +7,17 @@ import java.util.stream.Collectors;
 public class LongestIncreasingSubsequence_300 {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
-        int[] dp = new int[n]; // dp[i] -> the longest increasing subsequence ending at i
-
+        int[] dp = new int[n]; // dp[i] -> the longest increasing subsequence ending with nums[i]
         Arrays.fill(dp, 1);
-        int res = 1;
+
+        // dp[i] = dp[j] + 1; and j < i and nums[j] < nums[i]
         for (int i = 1; i < n; i++) {
             for (int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) dp[i] = Math.max(dp[i], dp[j] + 1);
-                res = Math.max(res, dp[i]);
-
+                if (nums[j] < nums[i]) dp[i] = Math.max(dp[i], dp[j] + 1);
             }
         }
 
-        return res;
+        return dp[n - 1];
     }
 
     public int lengthOfLISImprove(int[] nums){
