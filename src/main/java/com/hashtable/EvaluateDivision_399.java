@@ -4,33 +4,36 @@ import java.util.*;
 
 public class EvaluateDivision_399 {
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
-        Map<String, Map<String, Double>> map = new HashMap<>();
-        for (int i = 0; i < equations.size(); i++) {
-            String st = equations.get(i).get(0), ed = equations.get(i).get(1);
-            map.computeIfAbsent(st, k -> new HashMap<>()).put(ed, values[i]);
-            map.computeIfAbsent(ed, k-> new HashMap<>()).put(st, 1.0 / values[i]);
+        Map<String, Map<String, Double>> adj = new HashMap<>();
+        for (int i = 0; i < equations.size(); i++){
+            List<String > equ = equations.get(i);
+            adj.computeIfAbsent(equ.get(0), v -> new HashMap<>()).put(equ.get(1), values[i]);
+            adj.computeIfAbsent(equ.get(1), v -> new HashMap<>()).put(equ.get(0), 1.0 / values[i]);
         }
 
         double[] res = new double[queries.size()];
-        int i = 0;
-        for (List<String> query: queries){
+        for (int i = 0; i < queries.size(); i++) {
+            List<String > query = queries.get(i);
             String start = query.get(0), end = query.get(1);
-            if (!map.containsKey(start) || !map.containsKey(end)) res[i++] = -1;
+            if (!adj.containsKey(start) || !adj.containsKey(end)) res[i] = -1;
             else {
-                res[i++] = dfs(map, start, end, 1.0, new HashSet<>());
+                res[i] = dfs(adj, start, end,  new HashSet<>(), 1.0);
             }
         }
 
         return res;
     }
 
-    public double dfs(Map<String, Map<String, Double>> map, String start, String end, double acc, Set<String> visited){
+    public double dfs(Map<String, Map<String, Double>> adj, String start, String end, Set<String> visited, double acc){
+        // end condition
         if (start.equals(end)) return acc;
+
+        Map<String, Double> nexts = adj.get(start);
         visited.add(start);
-        Map<String, Double> cur = map.get(start);
-        for (String key: cur.keySet()){
-            if (!visited.contains(key)){
-                double ans = dfs(map, key, end, acc * cur.get(key), visited);
+
+        for (String next: nexts.keySet()){
+            if (!visited.contains(next)){
+                double ans = dfs(adj, next, end, visited, acc * nexts.get(next));
                 if (ans != -1.0) return ans;
             }
         }
