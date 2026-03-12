@@ -2,14 +2,13 @@ package com.dynamic_programming;
 
 public class JumpGame_55 {
     public boolean canJump(int[] nums) {
-        int n = nums.length, maxReach = 0;
+        int n = nums.length, longestCanReach = 0;
 
         for (int i = 0; i < n; i++) {
-            if (maxReach < i) return false;
-            maxReach = Math.max(maxReach, i + nums[i]);
+            if (longestCanReach >= i) longestCanReach = Math.max(longestCanReach, i + nums[i]);
         }
 
-        return maxReach >= n - 1;
+        return longestCanReach >= n - 1;
     }
 
     public static void main(String[] args) {
