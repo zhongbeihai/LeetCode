@@ -13,13 +13,16 @@ public class TopKFrequentElements_347 {
             fre.put(num, fre.getOrDefault(num , 0) + 1);
         }
 
-        PriorityQueue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>(Comparator.comparingInt(i -> -i.getValue()));
-        pq.addAll(fre.entrySet());
-
-        int[] res = new int[k];
-        for (int i = 0; i < k; i++) {
-            res[i] = pq.poll().getKey();
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(i -> i[1])); // {num, fre}
+        for (Map.Entry<Integer, Integer> e: fre.entrySet()) {
+            pq.add(new int[]{e.getKey(), e.getValue()});
+            while (pq.size() > k) pq.poll();
         }
+        int[] res = new int[k];
+        for (int i = k - 1; i >= 0 ; i--) {
+            res[i] = pq.poll()[0];
+        }
+
         return res;
     }
 
