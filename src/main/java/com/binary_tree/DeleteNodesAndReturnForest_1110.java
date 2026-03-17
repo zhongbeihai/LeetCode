@@ -1,45 +1,46 @@
 package com.binary_tree;
 
-import com.sun.jmx.remote.internal.ArrayQueue;
 import structure.TreeNode;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class DeleteNodesAndReturnForest_1110 {
+    List<TreeNode> res = new ArrayList<>();
     public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
-        if (root == null) return null;
-        ArrayList<TreeNode> res = new ArrayList<TreeNode>();
-        DFS(root, to_delete);
-        ArrayDeque<TreeNode> q = new ArrayDeque<>();
-        q.add(root);
-        while (!q.isEmpty()) {
-            TreeNode cur = q.poll();
-            if(cur.left != null) q.add(cur.left);
-            if(cur.right != null) q.add(cur.right);
-            if (cur.left != null) { // 先检查左子节点是否为 null
-                if (cur.left.val == -1) cur.left = null;
-            }
-            if (cur.right != null) { // 先检查右子节点是否为 null
-                if (cur.right.val == -1) cur.right = null;
-            }
-            if(cur.val == -1) {
-                if(cur.left != null) res.add(cur.left);
-                if(cur.right != null) res.add(cur.right);
-            }
-            if(cur.equals(root) && root.val != -1) res.add(cur);
+        HashSet<Integer> toDeleteSet = new HashSet<>();
+        for (int d: to_delete) toDeleteSet.add(d);
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        // To mark the TreeNode needed to be deleted
+        while (!queue.isEmpty()){
+            TreeNode cur = queue.poll();
+            if (toDeleteSet.contains(cur.val)) cur.val = -1;
+
+            if (cur.left != null) queue.add(cur.left);
+            if (cur.right != null) queue.add(cur.right);
         }
+
+        // Do delete
+        dfs(root);
+        if (root.val != -1) res.add(root);
+
         return res;
     }
 
-    public void DFS(TreeNode root, int[] to_delete) {
+    public void dfs(TreeNode root){
         if (root == null) return;
-        if (Arrays.stream(to_delete).anyMatch(r -> r == root.val)) {
-            root.val = -1;
+
+        dfs(root.left);
+        dfs(root.right);
+
+        if (root.left != null && root.left.val == -1) root.left = null;
+        if (root.right != null && root.right.val == -1) root.right = null;
+
+        if (root.val == -1){
+            if (root.left != null) res.add(root.left);
+            if (root.right != null) res.add(root.right);
+            root.left = null;
+            root.right = null;
         }
-        if (root.left != null) DFS(root.left, to_delete);
-        if (root.right != null) DFS(root.right, to_delete);
     }
 }
