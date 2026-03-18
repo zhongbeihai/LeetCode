@@ -7,35 +7,36 @@ import java.util.PriorityQueue;
 
 public class NetworkDelayTime {
     public int networkDelayTime(int[][] times, int n, int k) {
-        List<List<int[]>> adjMap = new ArrayList<>();
-        for (int i = 0; i <= n; i++) adjMap.add(new ArrayList<>());
+        List<List<int[]>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++) adj.add(new ArrayList<>());
         for (int[] time: times){
-            adjMap.get(time[0]).add(new int[]{time[1], time[2]});
+            adj.get(time[0] - 1).add(new int[]{time[1] - 1, time[2]}); // {destination, time}
         }
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingLong(i -> i[1])); // {point, curTime}
-        pq.add(new int[]{k, 0});
-        boolean[] visited = new boolean[n + 1];
-        int cnt = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(i -> i[1]));
+        int cnt = 0, timeUsed = 0;
+        pq.add(new int[]{k - 1, 0});
+        boolean[] visited = new boolean[n];
         while (!pq.isEmpty()){
             int[] cur = pq.poll();
             int curNode = cur[0], curTime = cur[1];
-
             if (visited[curNode]) continue;
 
-            visited[curNode] = true;
+            timeUsed = Math.max(timeUsed, curTime);
             cnt++;
+            visited[curNode] = true;
 
-            if (cnt == n) return curTime;
-
-            List<int[]> adj = adjMap.get(curNode);
-            for (int[] next : adj) {
-                if (!visited[next[0]]) {
-                    pq.add(new int[]{next[0], curTime + next[1]});
+            for (int[] nei: adj.get(curNode)){
+                if (!visited[nei[0]]){
+                    pq.add(new int[]{nei[0], curTime + nei[1]});
                 }
             }
         }
 
-        return -1;
+        return cnt == n ? timeUsed : -1;
+    }
+
+    public static void main(String[] args) {
+
     }
 }
