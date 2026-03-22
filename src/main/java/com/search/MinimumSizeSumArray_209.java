@@ -5,16 +5,19 @@ import java.util.Arrays;
 public class MinimumSizeSumArray_209 {
     public int minSubArrayLen(int target, int[] nums) {
         int n = nums.length;
-        int left = 0, sum = 0, ans = Integer.MAX_VALUE;
+        int left = 0, right = 0;
 
-        for (int right = 0; right < n; right++) {
+        int sum = 0, minLen = Integer.MAX_VALUE;
+        for (right = 0; right < n; right++){
             sum += nums[right];
             while (sum >= target) {
-                ans = Math.min(ans, right - left + 1); // 先更新
-                sum -= nums[left++];                 // 再收缩左端
+                minLen = Math.min(minLen, right - left + 1);
+                sum -= nums[left];
+                left++;
             }
         }
-        return ans == Integer.MAX_VALUE ? 0 : ans;
+
+        return minLen == Integer.MAX_VALUE ? 0 : minLen;
     }
 
     public static void main(String[] args) {
