@@ -5,21 +5,21 @@ public class NumberOfIslands_200 {
     public int numIslands(char[][] grid) {
         int m = grid.length, n = grid[0].length;
 
-        int res = 0;
+        int cnt = 0;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == '1'){
+                    cnt++;
                     dfs(grid, i, j);
-                    res++;
                 }
             }
         }
 
-        return res;
+        return cnt;
     }
 
     public void dfs(char[][] grid, int x, int y){
-        int m = grid.length, n = grid[0].length;
+        int m = grid.length,  n = grid[0].length;
 
         grid[x][y] = '0';
         for (int[] dir: dirs){
