@@ -4,41 +4,44 @@ import java.util.Arrays;
 
 public class SplitArrayLargestSum_410 {
     public int splitArray(int[] nums, int k){
-        int low = Arrays.stream(nums).max().getAsInt();
-        int high = Arrays.stream(nums).sum();
+        int n = nums.length;
+        int low = 0, high = 0;
+        for (int num : nums) high += num;
 
         int res = Integer.MAX_VALUE;
         while (low < high){
-            int mid = (high + low) / 2;
+            int mid = low + (high - low) / 2;
             if (isSubarrayThanK(nums, mid, k)){
-                low = mid + 1;
-            } else {
                 high = mid;
                 res = Math.min(res, high);
+            }else {
+                low = mid + 1;
             }
         }
 
-        return high;
+        return low;
     }
 
     public boolean isSubarrayThanK(int[] nums, int mid, int k){
-        int splitSum = 0;
-        int split = 1;
-        for (int num : nums) {
-            if (splitSum + num > mid) { // 如果当前子数组的和超过 mid，才需要分割
-                splitSum = num;
-                split++;
-            } else {
-                splitSum += num;
+        int step = 1, cnt = 0;
+        for (int i = 0; i < nums.length; i++) {
+            cnt += nums[i];
+            if (cnt > mid){
+                cnt = nums[i];
+                step++;
             }
+
+            if (cnt > mid || step > k) return false;
         }
-        return split > k;
+
+        return step<= k;
     }
 
     public static void main(String[] args) {
         SplitArrayLargestSum_410 s = new SplitArrayLargestSum_410();
-//        s.isSubarrayThanK(new int[]{7,2,5,10,8}, 20, 2);
-        s.splitArray(new int[]{1,2,3,4,5}, 1);
-        // s.splitArray(new int[]{1,4,4}, 3);
+        // s.splitArray(new int[]{7,2,5,10,8}, 2);
+ //       s.isSubarrayThanK(new int[]{7,2,5,10,8}, 20, 2);
+       // s.splitArray(new int[]{1,2,3,4,5}, 1);
+        s.splitArray(new int[]{1,4,4}, 3);
     }
 }
