@@ -3,6 +3,7 @@ package com.prefixsum;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Given an array of integers nums and an integer k,
@@ -12,19 +13,20 @@ import java.util.Map;
  */
 public class SubarraySumEqualsK_560 {
     public int subarraySum(int[] nums, int k) {
-        Map<Long, Integer> sumToIdx = new HashMap<>(); // <Sum, times of sum occur>
+        Map<Long, Integer> map = new HashMap<>();
+        map.put(0L, 1);
+        long[] prefixSum = new long[nums.length];
 
-        long curSum = 0L;
-        sumToIdx.put(0L, 1);
-        int res = 0;
-        for (int i = 0; i < nums.length; i++){
-            curSum += nums[i];
-            if (sumToIdx.containsKey(curSum - k)) res += sumToIdx.get(curSum - k);
-
-            sumToIdx.put(curSum, sumToIdx.getOrDefault(curSum, 0) + 1);
+        int cnt = 0;
+        for (int i = 0; i < nums.length; i++) {
+            prefixSum[i] = i > 0 ? prefixSum[i-1] + nums[i]: nums[i];
+            if (map.containsKey(prefixSum[i] - k)){
+                cnt += map.get(prefixSum[i] - k);
+            }
+            map.put(prefixSum[i], map.getOrDefault(prefixSum[i], 0) + 1);
         }
 
-        return res;
+        return cnt;
     }
 
     public static void main(String[] args) {
