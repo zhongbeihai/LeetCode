@@ -5,20 +5,24 @@ import com.backtrack.NQueens_51;
 import java.util.*;
 
 public class MeetingRoomsII_253 {
+    // sort the meetings by start time
+    // use min-heap to track the earliest available meeting room
+    // for a meeting
+    //      1. start time > the earliest available meeting room -> reuse that meeting room
+    //      2. need a meeting room
     public int minMeetingRooms(int[][] intervals) {
-        int n = intervals.length;
-        Arrays.sort(intervals, Comparator.comparing(i -> i[0]));
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
+        PriorityQueue<Integer> pq = new PriorityQueue<>(); // ele -> ending time of the meetings
 
         int rooms = 0;
         for (int[] m: intervals){
-            int startTime = m[0], endTime = m[1];
-            if (pq.isEmpty() || pq.peek() > startTime){
+            int start = m[0], end = m[1];
+            if (pq.isEmpty() || start < pq.peek()) {
                 rooms++;
             }else {
                 pq.poll();
             }
-            pq.add(endTime);
+            pq.add(end);
         }
 
         return rooms;

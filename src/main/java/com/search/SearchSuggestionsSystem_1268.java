@@ -8,47 +8,44 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SearchSuggestionsSystem_1268 {
-    class TrieNode{
-        TrieNode[] children = new TrieNode[26];
-        List<String> closestThree = new ArrayList<>();
+    class Node{
+        Node[] children = new Node[26];
+        List<String> minStrings = new ArrayList<>();
     }
 
     class Trie{
-        TrieNode root = new TrieNode();
-
+        Node root = new Node();
         public void insert(String s){
-            TrieNode worker = root;
-            char[] ss = s.toCharArray();
-            for(char c: ss){
+            Node worker = root;
+            for (char c: s.toCharArray()){
                 int idx = c - 'a';
-                if (worker.children[idx] == null) worker.children[idx] = new TrieNode();
+                if (worker.children[idx] == null) worker.children[idx] = new Node();
                 worker = worker.children[idx];
-                if (worker.closestThree.size() < 3) worker.closestThree.add(s);
+                if (worker.minStrings.size() < 3) worker.minStrings.add(s);
             }
         }
 
-        public List<String> get(String s){
-            TrieNode worker = root;
-            char[] ss = s.toCharArray();
-            for (char c : ss){
+        public List<String> search(String s){
+            Node worker = root;
+            for (char c: s.toCharArray()){
                 int idx = c - 'a';
                 if (worker.children[idx] == null) return new ArrayList<>();
                 worker = worker.children[idx];
             }
-            return worker.closestThree;
+            return worker.minStrings;
         }
     }
 
     public List<List<String>> suggestedProducts(String[] products, String searchWord) {
         Arrays.sort(products);
         Trie t = new Trie();
-        for(String p: products) t.insert(p);
+        for (String p: products) t.insert(p);
 
         List<List<String>> res = new ArrayList<>();
-        StringBuilder s = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for (char c: searchWord.toCharArray()){
-            s.append(c);
-            res.add(t.get(s.toString()));
+            sb.append(c);
+            res.add(t.search(sb.toString()));
         }
 
         return res;
