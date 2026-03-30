@@ -13,33 +13,35 @@ import java.util.*;
  * Output: [[-2,2]]
  */
 public class KClosestPointsToOrigin_973 {
+    // max heap, size at most k
+    // we maintain the points in the order distance(from closest to farthest)
+    // when the size exceed k -> pop out the fartest point
     public int[][] kClosest(int[][] points, int k) {
-        class MyComparator implements Comparator<Pair<Integer, Integer>>{
+        // define a max heap
+        PriorityQueue<int[]> pq = new PriorityQueue<>((i, j) -> {
+            return -Long.compare(getDist(i), getDist(j));
+        });
 
-            @Override
-            public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
-                double d1 = o1.getKey() * o1.getKey() + o1.getValue() * o1.getValue();
-                double d2 = o2.getKey() * o2.getKey() + o2.getValue() * o2.getValue();
-                return (int) (d1 - d2);
+        // traverse all the points
+        for (int[] p: points){
+            pq.add(p);
+
+            // when the size exceed k
+            while (pq.size() > k){
+                pq.poll();
             }
         }
 
-        PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<>(new MyComparator());
-        LinkedList<Pair<Integer, Integer>> pointSet = new LinkedList<>();
-        for(int i = 0; i < points.length; i++){
-            pointSet.add(new Pair<>(points[i][0], points[i][1]));
-        }
-        for (Iterator<Pair<Integer, Integer>> it = pointSet.iterator(); it.hasNext(); ) {
-            pq.offer(it.next());
-        }
-
-        int[][] res = new int[k][2];
-        for(int i = 0; i < k; i++){
-            res[i][0] = pq.peek().getKey();
-            res[i][1] = pq.peek().getValue();
-            pq.poll();
+        int[][] res = new int[pq.size()][];
+        int i =0;
+        while (!pq.isEmpty()){
+            res[i++] = pq.poll();
         }
 
         return res;
+    }
+
+    public long getDist(int[] a){
+        return (long) a[0] * a[0] + (long) a[1] * a[1]; // don't need to cal the sqrt root
     }
 }
