@@ -3,39 +3,71 @@ package com.search;
 import java.util.*;
 
 public class FindAllPeopleWithSecret_2092 {
+    // sort meetings in the order of time
+    // use an array to mark the people who have known the secrets
+    // union all people that having meeting at time t
+    // if one of them has known the secrets -> all the people will know the secret
     public List<Integer> findAllPeople(int n, int[][] meetings, int firstPerson) {
-        List<List<int[]>> adj = new ArrayList<>();
-        for (int i = 0; i < n; i++) adj.add(new ArrayList<>());
-        for(int[] m : meetings){
-            adj.get(m[0]).add(new int[]{m[1], m[2]});
-            adj.get((m[1])).add(new int[]{m[0], m[2]});
-        }
-        int[] earliest = new int[n];
-        Arrays.fill(earliest, Integer.MAX_VALUE);
+        Arrays.sort(meetings, Comparator.comparingInt(i -> i[2]));
 
-        earliest[0] = 0;
-        earliest[firstPerson] = 0;
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(i -> i[1]));
-        pq.add(new int[]{0, 0});
-        pq.add(new int[]{firstPerson, 0});
+        UnionFind uf = new UnionFind(n);
+        uf.union(0, firstPerson);
 
-        while (!pq.isEmpty()){
-            int[] cur = pq.poll();
-            int curNode = cur[0], curTime = cur[1];
-            if (curTime > earliest[curNode]) continue;
-            earliest[curNode] = curTime;
+        int i = 0;
+        while (i < meetings.length){
+            int time = meetings[i][2];
 
-            for (int[] nei: adj.get(curNode)){
-                if (curTime <= nei[1] && curTime < earliest[nei[0]]) pq.add(nei);
+            // group all the meetings at the ``time``
+            List<int[]> group = new ArrayList<>();
+            while (i < meetings.length && meetings[i][2] == time){
+                group.add(meetings[i]);
+                i++;
+            }
+
+            Set<Integer> people = new HashSet<>();
+            for (int[] m: group) {
+                uf.union(m[0], m[1]);
+                people.add(m[0]);
+                people.add(m[1]);
+            }
+
+            for (int p: people){
+                if (!uf.connected(p, 0)) uf.reset(p);
             }
         }
 
         List<Integer> res = new ArrayList<>();
-        for (int i =0; i< n; i++){
-            if (earliest[i] != Integer.MAX_VALUE) res.add(i);
+        for (int j = 0; j < n; j++) {
+            if (uf.connected(j, 0)) res.add(j);
         }
 
         return res;
+    }
+
+    class UnionFind{
+        int[] parent;
+        public UnionFind(int n){
+            parent = new int[n];
+            for (int i = 0; i < n; i++) parent[i] = i;
+        }
+
+        public int find(int x){
+            if (parent[x] != x) parent[x] = find(parent[x]);
+            return parent[x];
+        }
+
+        public void union(int x, int y){
+            int px = find(x), py = find(y);
+            if (px != py) parent[px] = py;
+        }
+
+        public boolean connected(int x, int y){
+            return find(x) == find(y);
+        }
+
+        public void reset(int x){
+            parent[x] = x;
+        }
     }
 
     public static void main(String[] args) {
