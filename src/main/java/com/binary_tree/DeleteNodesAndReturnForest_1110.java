@@ -5,42 +5,41 @@ import structure.TreeNode;
 import java.util.*;
 
 public class DeleteNodesAndReturnForest_1110 {
-    List<TreeNode> res = new ArrayList<>();
+    // post Order dfs -> I want to process the children first
+    // 1. put the to_delete into HashSet
+    // 2. post order dfs -> if it needs to be deleted, return null
+    //  if left child is not null -> the left child will be the root node of left subtree; same as right child
+    // ; if not, return this node
+    List<TreeNode> res = new ArrayList<>();  // store all the root node
     public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
-        HashSet<Integer> toDeleteSet = new HashSet<>();
-        for (int d: to_delete) toDeleteSet.add(d);
-        Deque<TreeNode> queue = new ArrayDeque<>();
-        queue.add(root);
-        // To mark the TreeNode needed to be deleted
-        while (!queue.isEmpty()){
-            TreeNode cur = queue.poll();
-            if (toDeleteSet.contains(cur.val)) cur.val = -1;
+        HashSet<Integer> deleteSet = new HashSet<>();
+        for(int num: to_delete) deleteSet.add(num);
 
-            if (cur.left != null) queue.add(cur.left);
-            if (cur.right != null) queue.add(cur.right);
-        }
-
-        // Do delete
-        dfs(root);
-        if (root.val != -1) res.add(root);
+        root = dfs(root, deleteSet);
+        if (root != null) res.add(root);
 
         return res;
     }
 
-    public void dfs(TreeNode root){
-        if (root == null) return;
+    public TreeNode dfs(TreeNode root, HashSet<Integer> deleteSet){
+        // return condition
+        if (root == null) return null;
 
-        dfs(root.left);
-        dfs(root.right);
+        root.left = dfs(root.left, deleteSet);
+        root.right = dfs(root.right, deleteSet);
 
-        if (root.left != null && root.left.val == -1) root.left = null;
-        if (root.right != null && root.right.val == -1) root.right = null;
-
-        if (root.val == -1){
-            if (root.left != null) res.add(root.left);
-            if (root.right != null) res.add(root.right);
-            root.left = null;
-            root.right = null;
+        // when this node is needed to be deleted
+        if (deleteSet.contains(root.val)){
+            // check whether left child is null -> not null , it will become a new root node
+            if (root.left != null){
+                res.add(root.left);
+            }
+            if (root.right != null){
+                res.add(root.right);
+            }
+            return null; // this node is deleted;
         }
+
+        return root;
     }
 }
